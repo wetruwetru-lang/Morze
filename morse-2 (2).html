@@ -1,0 +1,2605 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MORSE.PRO — от точки до профи</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#070B14;
+  --bg-panel:#0E1626;
+  --bg-panel-2:#131E36;
+  --border:#1E2C4A;
+  --border-soft:#162238;
+  --blue:#2F6FED;
+  --blue-bright:#5B9BFF;
+  --blue-glow:rgba(91,155,255,.35);
+  --bead-off:#233355;
+  --bead-off-2:#2C3F66;
+  --text-1:#E9EEFB;
+  --text-2:#8FA3C8;
+  --text-3:#57678C;
+  --ok:#4DD4A8;
+  --err:#FF6685;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:var(--bg);color:var(--text-1);font-family:'Inter',sans-serif;-webkit-font-smoothing:antialiased}
+h1,h2,h3,.disp{font-family:'Unbounded',sans-serif}
+.mono{font-family:'JetBrains Mono',monospace}
+.wrap{max-width:920px;margin:0 auto;padding:0 20px 80px}
+a{color:var(--blue-bright)}
+
+/* ---------- NAV ---------- */
+.topbar{position:sticky;top:0;z-index:50;background:rgba(7,11,20,.86);backdrop-filter:blur(10px);border-bottom:1px solid var(--border-soft)}
+.topbar-in{max-width:920px;margin:0 auto;padding:14px 20px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.logo{display:flex;align-items:center;gap:10px;font-family:'Unbounded';font-weight:600;font-size:16px;letter-spacing:.02em}
+.logo .dot{width:10px;height:10px;background:var(--blue-bright);border-radius:50%;box-shadow:0 0 10px var(--blue-glow)}
+.logo .dash{width:20px;height:10px;background:var(--blue-bright);border-radius:3px;box-shadow:0 0 10px var(--blue-glow)}
+.tabs{display:flex;gap:4px;background:var(--bg-panel);border:1px solid var(--border-soft);border-radius:10px;padding:4px}
+.tab-btn{border:none;background:transparent;color:var(--text-2);font-family:'Inter';font-weight:500;font-size:13px;padding:8px 14px;border-radius:7px;cursor:pointer;transition:.15s}
+.tab-btn:hover{color:var(--text-1)}
+.tab-btn.active{background:var(--blue);color:#fff}
+.lang-switch{display:flex;gap:2px;background:var(--bg-panel);border:1px solid var(--border-soft);border-radius:10px;padding:3px}
+.lang-btn{border:none;background:transparent;color:var(--text-3);font-family:'JetBrains Mono';font-weight:600;font-size:11px;padding:6px 9px;border-radius:7px;cursor:pointer;transition:.15s}
+.lang-btn:hover{color:var(--text-1)}
+.lang-btn.active{background:var(--blue);color:#fff}
+
+/* ---------- HERO ---------- */
+.hero{padding:56px 0 28px;text-align:center}
+.eyebrow{display:inline-block;font-family:'JetBrains Mono';font-size:12px;color:var(--blue-bright);letter-spacing:.12em;text-transform:uppercase;border:1px solid var(--border);padding:5px 12px;border-radius:99px;margin-bottom:20px}
+.hero h1{font-size:38px;line-height:1.15;margin:0 0 14px;font-weight:600}
+.hero h1 span{color:var(--blue-bright)}
+.hero p{color:var(--text-2);font-size:16px;max-width:520px;margin:0 auto 30px;line-height:1.6}
+.hero-cta{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.btn{font-family:'Inter';font-weight:600;font-size:14px;border-radius:10px;padding:12px 22px;cursor:pointer;border:1px solid var(--border);background:var(--bg-panel);color:var(--text-1);transition:.15s}
+.btn:hover{border-color:var(--blue-bright);background:var(--bg-panel-2)}
+.btn.primary{background:var(--blue);border-color:var(--blue);color:#fff}
+.btn.primary:hover{background:var(--blue-bright)}
+.btn:disabled{opacity:.4;cursor:not-allowed}
+.btn.small{padding:8px 14px;font-size:13px;border-radius:8px}
+
+/* ---------- SECTIONS ---------- */
+.view{display:none}
+.view.active{display:block}
+.section-title{font-size:22px;font-weight:600;margin:48px 0 6px}
+.section-sub{color:var(--text-2);font-size:14px;margin:0 0 26px;line-height:1.6}
+
+/* ---------- THEORY CARDS ---------- */
+.tcard{background:var(--bg-panel);border:1px solid var(--border);border-radius:16px;padding:22px;margin-bottom:16px}
+.tcard-num{font-family:'JetBrains Mono';color:var(--blue-bright);font-size:12px;letter-spacing:.1em}
+.tcard h3{font-size:17px;margin:6px 0 10px;font-weight:600}
+.tcard p{color:var(--text-2);font-size:14px;line-height:1.7;margin:0 0 8px}
+.chip{display:inline-block;font-family:'JetBrains Mono';font-size:12px;background:var(--bg);border:1px solid var(--border);color:var(--blue-bright);padding:2px 8px;border-radius:6px}
+
+/* ---------- TIMING ILLUSTRATION ---------- */
+.timing-illus{background:var(--bg);border:1px solid var(--border-soft);border-radius:12px;padding:16px;overflow-x:auto}
+.timing-row{display:flex;align-items:center;gap:4px;min-width:520px;height:34px}
+.tblock{height:20px;border-radius:4px;background:linear-gradient(90deg,var(--blue),var(--blue-bright));box-shadow:0 0 10px var(--blue-glow);flex:none}
+.tgap{flex:none}
+.timing-cap{display:flex;justify-content:space-between;font-family:'JetBrains Mono';font-size:11px;color:var(--text-3);min-width:520px;margin-top:6px}
+
+/* ---------- MORSE TABLE ---------- */
+.help-wrap{overflow-x:auto;border-radius:10px;margin-bottom:6px}
+.help-table{width:100%;border-collapse:collapse;font-family:'JetBrains Mono';font-size:13px}
+.help-table th,.help-table td{border:1px solid var(--border-soft);padding:7px 6px;text-align:center}
+.help-table th{background:var(--bg);color:var(--text-2);font-weight:500;font-size:11px}
+.help-table td{color:var(--text-1)}
+.help-table td.chr{font-weight:700;color:var(--blue-bright);font-size:15px}
+.help-table td.code{letter-spacing:.15em;font-size:15px}
+.play-mini{border:1px solid var(--border);background:var(--bg-panel);color:var(--text-2);border-radius:6px;padding:3px 7px;cursor:pointer;font-size:12px;transition:.15s}
+.play-mini:hover{border-color:var(--blue-bright);color:var(--blue-bright)}
+
+/* ---------- ROADMAP ---------- */
+.roadmap{background:var(--bg-panel);border:1px solid var(--border);border-radius:16px;padding:22px;margin-bottom:24px;overflow-x:auto}
+.roadmap-track{min-width:760px}
+.roadmap-bar{position:relative;height:6px;background:var(--bead-off);border-radius:3px;margin:34px 10px 10px}
+.roadmap-fill{position:absolute;left:0;top:0;height:100%;background:linear-gradient(90deg,var(--blue),var(--blue-bright));border-radius:3px;transition:width .3s}
+.roadmap-nodes{position:absolute;top:50%;left:0;right:0;transform:translateY(-50%);display:flex;justify-content:space-between}
+.rnode{width:30px;height:30px;border-radius:50%;background:var(--bg-panel);border:2px solid var(--bead-off);display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono';font-size:12px;font-weight:700;color:var(--text-3);cursor:pointer;position:relative;transition:.15s;flex:none}
+.rnode:hover{border-color:var(--blue-bright)}
+.rnode.done{background:var(--blue);border-color:var(--blue-bright);color:#fff}
+.rnode.current{border-color:var(--blue-bright);color:var(--blue-bright);box-shadow:0 0 0 4px var(--blue-glow)}
+.rnode.locked{opacity:.45;cursor:not-allowed;background:var(--bg)}
+.rnode.locked:hover{border-color:var(--bead-off)}
+.rlabels{display:flex;justify-content:space-between;margin:10px 10px 0}
+.rlabels span{font-size:9px;color:var(--text-3);width:50px;text-align:center;font-family:'JetBrains Mono';line-height:1.3}
+
+/* ---------- TRAINER ---------- */
+.trainer-top{display:flex;gap:10px;flex-wrap:wrap;justify-content:space-between;align-items:center;margin-bottom:14px}
+.mode-switch{display:flex;gap:4px;background:var(--bg-panel);border:1px solid var(--border-soft);border-radius:10px;padding:4px;flex-wrap:wrap}
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:18px 0 20px}
+.stat{background:var(--bg-panel);border:1px solid var(--border-soft);border-radius:12px;padding:14px}
+.stat .lbl{font-size:12px;color:var(--text-3)}
+.stat .val{font-family:'JetBrains Mono';font-size:20px;font-weight:700;margin-top:4px}
+
+.settings-row{display:flex;gap:18px;flex-wrap:wrap;align-items:center;background:var(--bg-panel);border:1px solid var(--border-soft);border-radius:12px;padding:14px 16px;margin-bottom:18px}
+.settings-row label{display:flex;flex-direction:column;gap:6px;font-family:'JetBrains Mono';font-size:11px;color:var(--text-3)}
+.settings-row input[type=range]{accent-color:var(--blue-bright);width:140px}
+.settings-row .timer-row{display:flex;align-items:center;gap:8px;font-family:'JetBrains Mono';font-size:12px;color:var(--text-2)}
+.settings-row .timer-row input[type=checkbox]{accent-color:var(--blue-bright)}
+
+.problem-box{background:var(--bg-panel);border:1px solid var(--border);border-radius:16px;padding:28px 24px;text-align:center;margin-bottom:18px}
+.problem-hint{font-family:'JetBrains Mono';font-size:12px;color:var(--text-3);letter-spacing:.1em;text-transform:uppercase;margin-bottom:14px}
+.play-big{width:84px;height:84px;border-radius:50%;background:var(--blue);border:1px solid var(--blue-bright);color:#fff;font-size:28px;cursor:pointer;transition:.15s;display:inline-flex;align-items:center;justify-content:center;box-shadow:0 0 24px var(--blue-glow)}
+.play-big:hover{background:var(--blue-bright)}
+.play-big:active{transform:scale(.94)}
+.target-text{font-family:'JetBrains Mono';font-size:44px;font-weight:700;color:var(--blue-bright);word-break:break-word}
+.code-display{font-family:'JetBrains Mono';font-size:28px;letter-spacing:.12em;color:var(--text-1);min-height:40px;margin:14px 0;word-break:break-all}
+.code-display .empty{color:var(--text-3);font-size:16px;letter-spacing:0}
+
+.choice-row{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:18px}
+.choice-btn{font-family:'JetBrains Mono';font-size:16px;font-weight:700;border:1px solid var(--border);background:var(--bg);color:var(--text-1);padding:10px 18px;border-radius:10px;cursor:pointer;transition:.15s;min-width:46px}
+.choice-btn:hover{border-color:var(--blue-bright)}
+.choice-btn.correct{background:var(--ok);border-color:var(--ok);color:#06251c}
+.choice-btn.wrong{background:var(--err);border-color:var(--err);color:#2a0410}
+.choice-btn:disabled{cursor:default}
+
+.word-input{background:var(--bg);border:1px solid var(--border);border-radius:10px;color:var(--text-1);padding:12px 16px;font-size:18px;width:80%;max-width:320px;text-align:center;text-transform:uppercase;font-family:'JetBrains Mono'}
+.word-input:focus{outline:none;border-color:var(--blue-bright)}
+
+.key-pad{display:flex;gap:14px;justify-content:center;margin-top:18px;flex-wrap:wrap}
+.key-btn{font-family:'JetBrains Mono';font-size:22px;font-weight:700;border:1px solid var(--border);background:var(--bg);color:var(--text-1);width:96px;height:64px;border-radius:12px;cursor:pointer;transition:.1s;user-select:none}
+.key-btn:hover{border-color:var(--blue-bright)}
+.key-btn:active,.key-btn.pressed{background:var(--blue-bright);border-color:var(--blue-bright);color:#fff;transform:scale(.97)}
+.tele-key{width:220px!important;height:88px!important;font-size:16px!important;line-height:1.4;letter-spacing:.08em}
+.tele-key small{display:block;font-size:11px;font-weight:400;opacity:.8;margin-top:6px;letter-spacing:normal}
+.send-actions{display:flex;gap:10px;justify-content:center;margin-top:16px;flex-wrap:wrap}
+
+.feedback{min-height:24px;font-size:14px;margin-top:14px;font-weight:500}
+.feedback.ok{color:var(--ok)}
+.feedback.err{color:var(--err)}
+
+.donate-card{background:var(--bg-panel);border:1px solid var(--border);border-radius:16px;padding:22px;margin-top:32px}
+.donate-card h3{margin:0 0 6px;font-size:16px;font-weight:600}
+.donate-card p{color:var(--text-2);font-size:13px;margin:0 0 16px;line-height:1.6}
+.donate-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:12px 0;border-top:1px solid var(--border-soft)}
+.donate-row:first-of-type{border-top:none;padding-top:0}
+.donate-label{font-family:'JetBrains Mono';font-size:12px;color:var(--blue-bright);min-width:120px}
+.donate-addr{flex:1;min-width:180px;font-family:'JetBrains Mono';font-size:12px;color:var(--text-1);background:var(--bg);padding:7px 10px;border-radius:6px;border:1px solid var(--border-soft);word-break:break-all}
+
+footer{text-align:center;color:var(--text-3);font-size:12px;padding:40px 0 10px}
+
+/* ---------- HAM / GAMES SHARED ---------- */
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.badge{display:inline-block;font-family:'JetBrains Mono';font-size:11px;background:var(--bg);border:1px solid var(--border);color:var(--text-2);padding:3px 9px;border-radius:99px}
+.noise-meter{display:flex;align-items:center;gap:8px}
+.callsign-box{font-family:'JetBrains Mono';font-size:34px;font-weight:700;color:var(--blue-bright);letter-spacing:.05em;margin:10px 0}
+.qso-log{background:var(--bg);border:1px solid var(--border-soft);border-radius:10px;padding:14px;max-height:260px;overflow-y:auto;font-family:'JetBrains Mono';font-size:13px;line-height:1.9;text-align:left}
+.qso-line{margin:0 0 2px}
+.qso-line .who{color:var(--text-3);margin-right:6px}
+.qso-line.mine{color:var(--blue-bright)}
+.qso-line.theirs{color:var(--text-1)}
+.qso-line.sys{color:var(--ok)}
+.macro-row{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:14px}
+.macro-btn{font-family:'JetBrains Mono';font-size:12px;border:1px solid var(--border);background:var(--bg);color:var(--blue-bright);padding:7px 12px;border-radius:8px;cursor:pointer;transition:.15s}
+.macro-btn:hover{border-color:var(--blue-bright)}
+.macro-btn:disabled{opacity:.35;cursor:not-allowed}
+.speed-hist{display:flex;align-items:flex-end;gap:3px;height:60px;margin-top:10px}
+.speed-bar{flex:1;background:linear-gradient(180deg,var(--blue-bright),var(--blue));border-radius:2px 2px 0 0;min-height:2px}
+.game-picker{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:22px}
+.game-card{background:var(--bg-panel);border:1px solid var(--border);border-radius:16px;padding:20px;cursor:pointer;transition:.15s;text-align:left}
+.game-card:hover{border-color:var(--blue-bright)}
+.game-card.active{border-color:var(--blue-bright);box-shadow:0 0 0 3px var(--blue-glow)}
+.game-card .gicon{font-size:26px;margin-bottom:8px}
+.game-card h4{margin:0 0 6px;font-size:15px;font-weight:600}
+.game-card p{margin:0;color:var(--text-2);font-size:12.5px;line-height:1.5}
+.game-panel{display:none}
+.game-panel.active{display:block}
+.game-hud{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-bottom:14px}
+.hud-chip{background:var(--bg-panel);border:1px solid var(--border-soft);border-radius:10px;padding:8px 14px;font-family:'JetBrains Mono';font-size:13px;color:var(--text-2)}
+.hud-chip b{color:var(--text-1)}
+.lives{letter-spacing:.15em}
+.rain-field{position:relative;background:var(--bg);border:1px solid var(--border-soft);border-radius:14px;height:340px;overflow:hidden;margin-bottom:14px}
+.rain-field::after{content:'';position:absolute;left:0;right:0;bottom:36px;height:1px;background:var(--border)}
+.rain-item{position:absolute;top:-40px;font-family:'JetBrains Mono';font-weight:700;font-size:20px;color:var(--blue-bright);background:var(--bg-panel);border:1px solid var(--border);border-radius:8px;width:38px;height:38px;display:flex;align-items:center;justify-content:center;transition:top linear;box-shadow:0 0 10px var(--blue-glow);cursor:pointer;touch-action:manipulation;user-select:none}
+.rain-item:active{transform:scale(1.15);border-color:var(--blue-bright)}
+.rain-keypad{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-bottom:14px}
+.rain-key-btn{font-family:'JetBrains Mono';font-weight:700;font-size:15px;min-width:38px;height:38px;padding:0 8px;border:1px solid var(--border);background:var(--bg-panel);color:var(--text-1);border-radius:8px;cursor:pointer;touch-action:manipulation}
+.rain-key-btn:active{border-color:var(--blue-bright);color:var(--blue-bright)}
+.rain-item.dying{opacity:0;transform:scale(1.4);transition:all .2s}
+.rain-item.missed{border-color:var(--err);color:var(--err)}
+.game-overlay{position:absolute;inset:0;background:rgba(7,11,20,.88);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;text-align:center;padding:20px}
+.game-overlay h4{margin:0;font-size:20px}
+.rain-input{position:relative;text-align:center;margin-top:6px}
+.rain-input input{background:var(--bg-panel);border:1px solid var(--border);color:var(--text-1);text-align:center;font-family:'JetBrains Mono';font-size:22px;text-transform:uppercase;border-radius:10px;padding:10px;width:100px}
+.leaderboard{font-family:'JetBrains Mono';font-size:13px;color:var(--text-2)}
+
+@media(max-width:760px){.wrap{padding:0 16px 60px}.topbar-in{padding:12px 16px}}
+@media(max-width:640px){
+  .hero{padding:40px 0 22px}
+  .hero h1{font-size:26px}
+  .hero p{font-size:14px}
+  .tcard{padding:18px}
+  .roadmap{padding:16px}
+  .target-text{font-size:32px}
+  .code-display{font-size:20px}
+  .stats-row{grid-template-columns:repeat(2,1fr)}
+  .key-btn{width:76px;height:56px;font-size:18px}
+  .tele-key{width:180px!important;height:76px!important;font-size:14px!important}
+  .donate-label{min-width:100%}
+  .donate-addr{font-size:11px}
+  .grid2{grid-template-columns:1fr}
+  .game-picker{grid-template-columns:1fr}
+  .callsign-box{font-size:24px}
+  .rain-field{height:280px}
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-in">
+    <div class="logo"><span class="dot"></span><span class="dash"></span> MORSE.PRO</div>
+    <div class="tabs">
+      <button class="tab-btn active" data-view="theory" onclick="setView('theory')" data-i18n="nav_theory">Теория</button>
+      <button class="tab-btn" data-view="trainer" onclick="setView('trainer')" data-i18n="nav_trainer">Тренажёр</button>
+      <button class="tab-btn" data-view="ham" onclick="setView('ham')" data-i18n="nav_ham">Радиолюбителю</button>
+      <button class="tab-btn" data-view="games" onclick="setView('games')" data-i18n="nav_games">Игры</button>
+    </div>
+    <div class="lang-switch" id="lang-switch">
+      <button class="lang-btn" data-lang="ru" onclick="setLang('ru')">RU</button>
+      <button class="lang-btn" data-lang="en" onclick="setLang('en')">EN</button>
+      <button class="lang-btn" data-lang="uk" onclick="setLang('uk')">UA</button>
+      <button class="lang-btn" data-lang="de" onclick="setLang('de')">DE</button>
+      <button class="lang-btn" data-lang="zh" onclick="setLang('zh')">中文</button>
+    </div>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <div class="hero">
+    <span class="eyebrow" data-i18n="hero_eyebrow">азбука морзе · на слух и на передачу</span>
+    <h1 data-i18n-html="hero_h1">От точки до профи — <span>слушай, стучи, запоминай</span></h1>
+    <p data-i18n="hero_p">Изучай азбуку Морзе методом Коха: по одному новому знаку за раз, сразу на слух и в реальном темпе. Таблица знаков всегда под рукой в разделе «Теория».</p>
+    <div class="hero-cta">
+      <button class="btn primary" onclick="setView('trainer')" data-i18n="hero_btn_start">Начать тренировку</button>
+      <button class="btn" onclick="setView('theory')" data-i18n="hero_btn_theory">Изучить теорию</button>
+    </div>
+  </div>
+
+  <!-- ================= THEORY ================= -->
+  <section class="view active" id="view-theory">
+
+    <div class="tcard">
+      <span class="tcard-num">01</span>
+      <h3 data-i18n="t1_title">Точка и тире — всего два символа</h3>
+      <p data-i18n-html="t1_p">Вся азбука Морзе строится из двух элементов: короткого сигнала — <span class="chip">точка (·)</span> — и длинного — <span class="chip">тире (—)</span>. По длительности тире ровно в 3 раза длиннее точки. Всё остальное — это то, сколько тишины между сигналами.</p>
+      <div class="timing-illus">
+        <div class="timing-row">
+          <div class="tblock" style="width:20px"></div>
+          <div class="tgap" style="width:20px"></div>
+          <div class="tblock" style="width:60px"></div>
+        </div>
+        <div class="timing-cap"><span data-i18n="t1_cap_dot">точка (1 ед.)</span><span data-i18n="t1_cap_gap">пауза (1 ед.)</span><span data-i18n="t1_cap_dash">тире (3 ед.)</span></div>
+      </div>
+    </div>
+
+    <div class="tcard">
+      <span class="tcard-num">02</span>
+      <h3 data-i18n="t2_title">Паузы — тоже часть кода</h3>
+      <p data-i18n="t2_p">Пауза между точками и тире внутри одной буквы равна одной точке. Пауза между буквами в слове — трём точкам. Пауза между словами — семи точкам. Именно паузы отличают «···» (буква S) от трёх отдельных точек, разделённых как разные буквы.</p>
+      <div class="timing-illus">
+        <div class="timing-row">
+          <div class="tblock" style="width:20px"></div><div class="tgap" style="width:20px"></div>
+          <div class="tblock" style="width:20px"></div><div class="tgap" style="width:20px"></div>
+          <div class="tblock" style="width:20px"></div><div class="tgap" style="width:60px"></div>
+          <div class="tblock" style="width:60px"></div>
+        </div>
+        <div class="timing-cap"><span>S (···)</span><span></span><span></span><span data-i18n="t2_cap_gap">пауза между буквами (3 ед.)</span><span>T (—)</span></div>
+      </div>
+    </div>
+
+    <div class="tcard">
+      <span class="tcard-num">03</span>
+      <h3 data-i18n="t3_title">Метод Коха: учи на скорости, добавляй по одному</h3>
+      <p data-i18n="t3_p1">Самая частая ошибка новичков — учить Морзе медленно, растягивая точки и тире, а потом мучительно «разгоняться». Метод Коха работает наоборот: с первого дня знаки звучат в комфортном рабочем темпе, но начинаешь всего с 2–3 знаков. Когда узнаёшь их на слух почти без ошибок — добавляется следующий.</p>
+      <p data-i18n="t3_p2">В «Тренажёре» уровни устроены именно так: 13 ступеней. Уровень 11 смешивает все выученные знаки вместе, 12 — короткие слова, 13 — целые фразы. Открывай следующий уровень, когда точность на текущем стабильно выше 80%.</p>
+    </div>
+
+    <div class="tcard">
+      <span class="tcard-num">04</span>
+      <h3 data-i18n="t4_title">Приём и передача — два разных навыка</h3>
+      <p data-i18n="t4_p">Понимать Морзе на слух (приём) и самому отбивать сигналы ключом (передача) — разные умения, тренировать нужно оба. В тренажёре есть режим «Приём на слух», а также два способа передачи.</p>
+    </div>
+
+    <div class="tcard">
+      <span class="tcard-num">05</span>
+      <h3 data-i18n="t5_title">Передача одной кнопкой — как настоящий телеграфный ключ</h3>
+      <p data-i18n="t5_p">В реальном телеграфном ключе нет отдельных кнопок для точки и тире — есть один рычаг. Короткое нажатие и быстрый отпуск — точка. Если удержать нажатой дольше — тире. Тренажёр сам определяет по длительности нажатия, что ты передал, и декодирует буквы в реальном времени — режим «Передача (ключ)» именно так и работает.</p>
+    </div>
+
+    <h2 class="section-title" data-i18n="theory_table_title">Таблица знаков — для справки</h2>
+    <p class="section-sub" data-i18n="theory_table_sub">Держи её под рукой во время тренировки. Нажми ▶, чтобы услышать, как звучит знак.</p>
+
+    <div class="tcard" style="grid-template-columns:1fr">
+      <h3 style="margin-top:0" data-i18n="theory_letters">Буквы</h3>
+      <div class="help-wrap" id="table-letters-wrap"></div>
+    </div>
+
+    <div class="tcard" style="grid-template-columns:1fr">
+      <h3 style="margin-top:0" data-i18n="theory_digits">Цифры</h3>
+      <div class="help-wrap"><table class="help-table" id="table-digits"></table></div>
+    </div>
+
+    <div class="tcard" style="grid-template-columns:1fr">
+      <h3 style="margin-top:0" data-i18n="theory_punct">Знаки препинания</h3>
+      <div class="help-wrap"><table class="help-table" id="table-punct"></table></div>
+    </div>
+
+    <div class="roadmap">
+      <h3 style="margin:0 0 4px;font-size:16px" data-i18n="theory_roadmap_title">Путь от новичка до профи</h3>
+      <p style="color:var(--text-2);font-size:13px;margin:0 0 6px" data-i18n="theory_roadmap_sub">13 уровней. Каждый следующий открывается, когда на текущем набрано от 15 ответов с точностью от 80%. Уровень 11 — все знаки вперемешку, 12 — слова, 13 — фразы.</p>
+      <div class="roadmap-track">
+        <div class="roadmap-bar"><div class="roadmap-fill" id="theory-roadmap-fill"></div>
+          <div class="roadmap-nodes" id="theory-roadmap-nodes"></div>
+        </div>
+        <div class="rlabels" id="theory-roadmap-labels"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= TRAINER ================= -->
+  <section class="view" id="view-trainer">
+    <h2 class="section-title" style="margin-top:40px" data-i18n="trainer_title">Тренажёр</h2>
+    <p class="section-sub" data-i18n="trainer_sub">Выбери уровень на шкале ниже и режим — приём на слух, передача двумя кнопками или передача одним ключом. Прогресс сохраняется автоматически.</p>
+
+    <div class="roadmap">
+      <div class="roadmap-track">
+        <div class="roadmap-bar"><div class="roadmap-fill" id="roadmap-fill"></div>
+          <div class="roadmap-nodes" id="roadmap-nodes"></div>
+        </div>
+        <div class="rlabels" id="roadmap-labels"></div>
+      </div>
+    </div>
+
+    <div class="stats-row">
+      <div class="stat"><div class="lbl" data-i18n="stat_solved">Решено</div><div class="val mono" id="st-solved">0</div></div>
+      <div class="stat"><div class="lbl" data-i18n="stat_acc">Точность</div><div class="val mono" id="st-acc">0%</div></div>
+      <div class="stat"><div class="lbl" data-i18n="stat_streak">Текущая серия</div><div class="val mono" id="st-streak">0</div></div>
+      <div class="stat"><div class="lbl" data-i18n="stat_best">Лучшая серия</div><div class="val mono" id="st-best">0</div></div>
+    </div>
+
+    <div class="trainer-top">
+      <div class="mode-switch">
+        <button class="tab-btn active" data-mode="receive" onclick="setMode('receive')" data-i18n="mode_receive">Приём на слух</button>
+        <button class="tab-btn" data-mode="send" onclick="setMode('send')" data-i18n="mode_send">Передача (2 кнопки)</button>
+        <button class="tab-btn" data-mode="key" onclick="setMode('key')" data-i18n="mode_key">Передача (ключ)</button>
+      </div>
+      <button class="btn small" id="review-btn" onclick="startReview()"><span data-i18n="review_btn">Повторить ошибки</span> (<span id="mistake-count">0</span>)</button>
+    </div>
+
+    <div class="settings-row">
+      <label><span data-i18n="settings_speed">Скорость</span> — <span id="wpm-out">15</span> <span data-i18n="unit_wpm">зн/мин</span>
+        <input type="range" id="wpm-slider" min="5" max="30" value="15" oninput="onWpmChange(this.value)">
+      </label>
+      <label><span data-i18n="settings_tone">Тон</span> — <span id="freq-out">600</span> <span data-i18n="unit_hz">Гц</span>
+        <input type="range" id="freq-slider" min="400" max="900" step="10" value="600" oninput="onFreqChange(this.value)">
+      </label>
+      <button class="btn small" id="sound-toggle-btn" onclick="toggleSound()">🔊 Звук</button>
+      <label class="timer-row"><input type="checkbox" id="timer-toggle" onchange="toggleTimerMode()"> <span data-i18n="settings_timer">на время (60с)</span> <span id="timer-out" class="mono"></span></label>
+    </div>
+
+    <div class="problem-box">
+      <div class="problem-hint" id="problem-hint">приём на слух · уровень 1</div>
+
+      <div id="receive-area">
+        <button class="play-big" id="play-btn" onclick="replayCurrent()">▶</button>
+        <div class="choice-row" id="choice-row"></div>
+        <div id="word-answer-row" style="display:none;margin-top:18px">
+          <input type="text" class="word-input" id="word-input" data-i18n-ph="ph_word_or_phrase" placeholder="введи слово или фразу" autocomplete="off" onkeydown="if(event.key==='Enter'){submitWordAnswer();}">
+          <div style="margin-top:12px"><button class="btn primary small" onclick="submitWordAnswer()" data-i18n="btn_check">Проверить</button></div>
+        </div>
+      </div>
+
+      <div id="send-area" style="display:none">
+        <div class="target-text" id="send-target">E</div>
+        <div class="code-display" id="send-display"><span class="empty" data-i18n="waiting_input">жди ввода…</span></div>
+        <div class="key-pad">
+          <button class="key-btn" id="dit-btn" onclick="sendSymbol('.')">· <span data-i18n="key_dot">точка</span></button>
+          <button class="key-btn" id="dah-btn" onclick="sendSymbol('-')">— <span data-i18n="key_dash">тире</span></button>
+        </div>
+        <div class="key-pad" id="send-gap-buttons" style="display:none">
+          <button class="key-btn" onclick="sendLetterGap()">␣ <span data-i18n="key_pad_letter">буква</span></button>
+          <button class="key-btn" onclick="sendWordGap()">/ <span data-i18n="key_pad_word">слово</span></button>
+        </div>
+        <div class="send-actions">
+          <button class="btn small" onclick="clearSend()" data-i18n="btn_clear">Очистить</button>
+          <button class="btn small" onclick="replaySendTarget()" data-i18n="btn_hear_correct">▶ Как звучит верно</button>
+          <button class="btn primary small" onclick="submitSend()" data-i18n="btn_check">Проверить</button>
+        </div>
+      </div>
+
+      <div id="key-area" style="display:none">
+        <div class="target-text" id="key-target">E</div>
+        <div class="code-display" id="key-decoded"><span class="empty" data-i18n="waiting_input">жди ввода…</span></div>
+        <div class="key-pad">
+          <button class="key-btn tele-key" id="tele-key-btn"
+            onmousedown="teleDown(event)" onmouseup="teleUp(event)" onmouseleave="teleUp(event)"
+            ontouchstart="teleDown(event)" ontouchend="teleUp(event)">
+            <span data-i18n="key_btn_label">КЛЮЧ</span><small data-i18n="key_btn_sub">держи = тире · тапни = точка</small>
+          </button>
+        </div>
+        <div class="send-actions">
+          <button class="btn small" onclick="clearKey()" data-i18n="btn_clear">Очистить</button>
+          <button class="btn small" onclick="replaySendTarget()" data-i18n="btn_hear_correct">▶ Как звучит верно</button>
+          <button class="btn primary small" onclick="submitKey()" data-i18n="btn_check">Проверить</button>
+        </div>
+      </div>
+
+      <div class="feedback" id="feedback"></div>
+    </div>
+
+    <div class="tcard" style="margin-top:0">
+      <h3 style="margin-top:0;font-size:15px" data-i18n="hint_card_title">Подсказка</h3>
+      <p style="margin:0" data-i18n="hint_card_p">В режиме приёма клавиатура тоже работает — печатай ответ буквой или цифрой. В режиме передачи двумя кнопками: точка — клавиша «.», тире — «-», пробел — разделитель букв (на уровнях со словами), «/» — разделитель слов, Enter — проверить. В режиме с ключом можно удерживать пробел вместо клика по кнопке.</p>
+    </div>
+  </section>
+
+  <!-- ================= HAM RADIO TOOLS ================= -->
+  <section class="view" id="view-ham">
+    <h2 class="section-title" style="margin-top:40px" data-i18n="ham_title">Инструменты радиолюбителя</h2>
+    <p class="section-sub" data-i18n="ham_sub">Q-коды и CW-сокращения, тренировка позывных, имитация настоящего QSO в эфире с помехами и анализ твоей скорости передачи ключом.</p>
+
+    <div class="tcard" style="grid-template-columns:1fr">
+      <h3 style="margin-top:0" data-i18n="qcodes_title">Q-коды и CW-сокращения</h3>
+      <p style="margin-bottom:14px" data-i18n="qcodes_sub">Стандартный набор, который звучит в каждом QSO. Нажми ▶, чтобы услышать.</p>
+      <div class="help-wrap" id="table-qcodes-wrap"></div>
+    </div>
+
+    <div class="settings-row" id="ham-noise-row">
+      <label><span data-i18n="noise_label">Эфирный шум (QRN/QRM)</span> — <span id="ham-noise-out">0</span>%
+        <input type="range" id="ham-noise-slider" min="0" max="80" step="5" value="0" oninput="onNoiseChange(this.value)">
+      </label>
+      <span class="badge" id="noise-badge">чистый эфир</span>
+    </div>
+
+    <div class="grid2">
+      <div class="tcard">
+        <h3 style="margin-top:0" data-i18n="callgen_title">Генератор позывных</h3>
+        <p data-i18n="callgen_p">Случайный позывной в стиле реальных радиолюбительских префиксов — для тренировки приёма как в настоящем эфире.</p>
+        <div class="callsign-box" id="callgen-box">R7AB</div>
+        <div class="hero-cta">
+          <button class="btn" onclick="genCallsign()">🎲 <span data-i18n="btn_new_callsign">Новый позывной</span></button>
+          <button class="btn primary" onclick="playCallsign()">▶ <span data-i18n="btn_listen">Прослушать</span></button>
+        </div>
+      </div>
+      <div class="tcard">
+        <h3 style="margin-top:0" data-i18n="callquiz_title">Тренировка позывных на слух</h3>
+        <p id="callquiz-hint" data-i18n="callquiz_hint">Нажми «Дать позывной» — прослушай (в шуме, если включён) и введи, что услышал.</p>
+        <div class="callsign-box" id="callquiz-mask">••••••</div>
+        <input type="text" class="word-input" id="callquiz-input" data-i18n-ph="ph_your_answer" placeholder="твой ответ" autocomplete="off" onkeydown="if(event.key==='Enter'){checkCallsignQuiz();}">
+        <div class="hero-cta" style="margin-top:14px">
+          <button class="btn" onclick="newCallsignQuiz()" data-i18n="btn_give_callsign">Дать позывной</button>
+          <button class="btn small" onclick="replayCallsignQuiz()" data-i18n="btn_repeat">▶ Повторить</button>
+          <button class="btn primary small" onclick="checkCallsignQuiz()" data-i18n="btn_check">Проверить</button>
+        </div>
+        <div class="feedback" id="callquiz-feedback"></div>
+      </div>
+    </div>
+
+    <h3 style="font-size:17px;margin:30px 0 4px" data-i18n="qso_trainer_title">Тренажёр QSO — имитация радиосвязи</h3>
+    <p class="section-sub" style="margin-bottom:14px" data-i18n="qso_trainer_sub">Проходи стандартный обмен позывной → RST → имя → QTH → 73, как в настоящей CW-связи. Партнёр «передаёт» азбукой Морзе (можно с шумом), ты отвечаешь готовыми макросами ключом.</p>
+    <div class="tcard">
+      <div class="game-hud">
+        <div class="hud-chip"><span data-i18n="qso_partner_label">Корреспондент</span>: <b id="qso-partner">—</b></div>
+        <div class="hud-chip"><span data-i18n="qso_step_label">Шаг</span>: <b id="qso-step">0/6</b></div>
+      </div>
+      <div class="qso-log" id="qso-log"></div>
+      <div class="macro-row" id="qso-macros"></div>
+      <div class="hero-cta" style="margin-top:14px">
+        <button class="btn" onclick="startQso()">▶ <span data-i18n="btn_start_qso">Начать новое QSO</span></button>
+        <button class="btn small" onclick="replayQsoLine()">🔁 <span data-i18n="btn_repeat_phrase">Повторить последнюю фразу</span></button>
+      </div>
+    </div>
+
+    <h3 style="font-size:17px;margin:30px 0 4px" data-i18n="speed_title">Анализ скорости передачи</h3>
+    <p class="section-sub" style="margin-bottom:14px" data-i18n="speed_sub">Каждое нажатие ключа в режиме «Передача (ключ)» и в играх записывается. Здесь — твоя реальная скорость и стабильность таймингов, а не только настройка WPM.</p>
+    <div class="stats-row" style="grid-template-columns:repeat(3,1fr)">
+      <div class="stat"><div class="lbl" data-i18n="speed_avg_label">Твоя средняя скорость</div><div class="val mono" id="speed-avg">— зн/мин</div></div>
+      <div class="stat"><div class="lbl" data-i18n="speed_consistency_label">Стабильность таймингов</div><div class="val mono" id="speed-consistency">—%</div></div>
+      <div class="stat"><div class="lbl" data-i18n="speed_count_label">Нажатий записано</div><div class="val mono" id="speed-count">0</div></div>
+    </div>
+    <div class="speed-hist" id="speed-hist"></div>
+
+    <div class="hero-cta" style="margin-top:22px">
+      <button class="btn" onclick="exportStats()">⬇ <span data-i18n="export_json_btn">Экспортировать статистику (JSON)</span></button>
+      <button class="btn" onclick="exportStatsCsv()">⬇ <span data-i18n="export_csv_btn">Экспортировать лог (CSV)</span></button>
+    </div>
+    <p style="color:var(--text-3);font-size:12px;margin-top:10px" data-i18n="export_note">Экспорт содержит прогресс по уровням, историю скорости передачи и результаты игр — файл можно приложить к своему логу или разбору тренировок.</p>
+
+    <h3 style="font-size:17px;margin:30px 0 4px" data-i18n="savecode_title">Личный код сохранения</h3>
+    <p class="section-sub" style="margin-bottom:14px" data-i18n="savecode_sub">Прогресс уже сохраняется прямо в этом браузере автоматически. Чтобы перенести его на другое устройство или в другой браузер — без интернета и регистрации — используй 16-значный код: он хранит открытый и текущий уровень, пройденные уровни, лучшие результаты трёх игр и настройки скорости/шума.</p>
+    <div class="grid2">
+      <div class="tcard">
+        <h3 style="margin-top:0;font-size:15px" data-i18n="savecode_mycode_title">Мой код</h3>
+        <div class="callsign-box" id="save-code-box" style="font-size:22px;letter-spacing:.08em;word-break:break-all">————————————————</div>
+        <div class="hero-cta">
+          <button class="btn small" onclick="updateSaveCodeDisplay()">🔄 <span data-i18n="btn_refresh">Обновить</span></button>
+          <button class="btn primary small" id="copy-code-btn" onclick="copyCode()" data-i18n="btn_copy">Скопировать</button>
+        </div>
+      </div>
+      <div class="tcard">
+        <h3 style="margin-top:0;font-size:15px" data-i18n="savecode_restore_title">Восстановить по коду</h3>
+        <input type="text" class="word-input" id="restore-code-input" data-i18n-ph="ph_16chars" placeholder="16 символов" maxlength="16" autocomplete="off" style="width:100%">
+        <div class="hero-cta" style="margin-top:12px">
+          <button class="btn primary small" onclick="applySaveCode()" data-i18n="btn_restore">Восстановить прогресс</button>
+        </div>
+        <div class="feedback" id="restore-code-feedback"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= GAMES ================= -->
+  <section class="view" id="view-games">
+    <h2 class="section-title" style="margin-top:40px" data-i18n="games_title">Игры на азбуке Морзе</h2>
+    <p class="section-sub" data-i18n="games_sub">Три аркадных режима поверх той же таблицы знаков и метода Коха — для тренировки под давлением времени и в шуме эфира.</p>
+
+    <div class="game-picker">
+      <div class="game-card" id="picker-hunter" onclick="openGame('hunter')">
+        <div class="gicon">🎯</div>
+        <h4 data-i18n="game1_title">Охотник за позывными</h4>
+        <p data-i18n="game1_desc">Слушай позывной в шуме эфира и набирай его до истечения времени. Серия без ошибок ускоряет темп.</p>
+      </div>
+      <div class="game-card" id="picker-rain" onclick="openGame('rain')">
+        <div class="gicon">🌧️</div>
+        <h4 data-i18n="game2_title">Сигнальный дождь</h4>
+        <p data-i18n="game2_desc">Знаки падают сверху, каждый звучит морзянкой. Печатай букву, пока капсула не долетела до земли.</p>
+      </div>
+      <div class="game-card" id="picker-qso" onclick="openGame('qso')">
+        <div class="gicon">📻</div>
+        <h4 data-i18n="game3_title">QSO на скорость</h4>
+        <p data-i18n="game3_desc">Быстрый радиообмен: прими RST/имя/QTH на слух и правильно ответь макросами — на время и без ошибок.</p>
+      </div>
+    </div>
+
+    <!-- GAME 1: Callsign Hunter -->
+    <div class="game-panel" id="panel-hunter">
+      <div class="tcard">
+        <div class="game-hud">
+          <div class="hud-chip"><span data-i18n="hud_score">Счёт</span>: <b id="hunter-score">0</b></div>
+          <div class="hud-chip"><span data-i18n="hud_streak">Серия</span>: <b id="hunter-streak">0</b></div>
+          <div class="hud-chip"><span data-i18n="hud_lives">Жизни</span>: <b class="lives" id="hunter-lives">●●●</b></div>
+          <div class="hud-chip"><span data-i18n="hud_time">Время</span>: <b id="hunter-time">—</b></div>
+        </div>
+        <div class="problem-box" style="position:relative;padding:34px 24px">
+          <div class="problem-hint" data-i18n="hunter_hint">слушай позывной и набирай его</div>
+          <div class="callsign-box" id="hunter-mask">••••••</div>
+          <input type="text" class="word-input" id="hunter-input" data-i18n-ph="ph_callsign" placeholder="позывной" autocomplete="off" onkeydown="if(event.key==='Enter'){hunterSubmit();}">
+          <div class="hero-cta" style="margin-top:16px">
+            <button class="btn" id="hunter-start-btn" onclick="startHunter()">▶ <span data-i18n="btn_start">Старт</span></button>
+            <button class="btn small" onclick="replayHunter()">🔁 <span data-i18n="btn_repeat_short">Повторить</span></button>
+            <button class="btn primary small" onclick="hunterSubmit()" data-i18n="btn_check">Проверить</button>
+          </div>
+          <div class="feedback" id="hunter-feedback"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- GAME 2: Signal Rain -->
+    <div class="game-panel" id="panel-rain">
+      <div class="tcard">
+        <div class="game-hud">
+          <div class="hud-chip"><span data-i18n="hud_score">Счёт</span>: <b id="rain-score">0</b></div>
+          <div class="hud-chip"><span data-i18n="hud_level">Уровень</span>: <b id="rain-level">1</b></div>
+          <div class="hud-chip"><span data-i18n="hud_lives">Жизни</span>: <b class="lives" id="rain-lives">●●●</b></div>
+        </div>
+        <div class="rain-field" id="rain-field">
+          <div class="game-overlay" id="rain-overlay">
+            <h4 data-i18n="game2_title">Сигнальный дождь</h4>
+            <p style="color:var(--text-2);font-size:13px;max-width:340px" data-i18n="rain_overlay_p">Знаки текущего уровня падают сверху и звучат азбукой Морзе. На компьютере — печатай букву на клавиатуре. На телефоне — тапай по самой падающей капсуле или по кнопкам внизу. Три пропуска — игра окончена.</p>
+            <button class="btn primary" onclick="startRain()">▶ <span data-i18n="btn_start_game">Начать игру</span></button>
+          </div>
+        </div>
+        <div class="rain-keypad" id="rain-keypad"></div>
+      </div>
+    </div>
+
+    <!-- GAME 3: QSO Speed -->
+    <div class="game-panel" id="panel-qso">
+      <div class="tcard">
+        <div class="game-hud">
+          <div class="hud-chip"><span data-i18n="hud_score">Счёт</span>: <b id="qsog-score">0</b></div>
+          <div class="hud-chip"><span data-i18n="hud_round">Раунд</span>: <b id="qsog-round">0/5</b></div>
+          <div class="hud-chip"><span data-i18n="hud_time">Время</span>: <b id="qsog-time">—</b></div>
+        </div>
+        <div class="qso-log" id="qsog-log"></div>
+        <div class="macro-row" id="qsog-macros"></div>
+        <div class="hero-cta" style="margin-top:14px">
+          <button class="btn" id="qsog-start-btn" onclick="startQsoGame()">▶ <span data-i18n="btn_start_qso_speed">Старт QSO на скорость</span></button>
+          <button class="btn small" onclick="replayQsoGameLine()">🔁 <span data-i18n="btn_repeat_phrase2">Повторить фразу</span></button>
+        </div>
+        <div class="feedback" id="qsog-feedback"></div>
+      </div>
+    </div>
+
+    <div class="tcard" id="games-leaderboard-card">
+      <h3 style="margin-top:0;font-size:15px" data-i18n="leaderboard_title">Личные рекорды</h3>
+      <div class="leaderboard" id="games-leaderboard">—</div>
+    </div>
+  </section>
+
+  <div class="donate-card">
+    <h3 data-i18n="donate_title">Поддержать проект</h3>
+    <p data-i18n="donate_p">Если тренажёр пригодился — можно поддержать разработку донатом.</p>
+    <div class="donate-row">
+      <span class="donate-label">USDT (TRC20)</span>
+      <code class="donate-addr">TVz7UzXv1Kcqf5uKWgHuzCpaHhd6Lvfvv9</code>
+      <button class="btn small" onclick="copyAddr(this,'TVz7UzXv1Kcqf5uKWgHuzCpaHhd6Lvfvv9')" data-i18n="btn_copy">Копировать</button>
+    </div>
+    <div class="donate-row">
+      <span class="donate-label">XLM</span>
+      <code class="donate-addr">GAQX5OJRPHUY62MDHOHC7U4XBXMBDQFWNB5XN67BRLNUNJ3TOGAUFU2B</code>
+      <button class="btn small" onclick="copyAddr(this,'GAQX5OJRPHUY62MDHOHC7U4XBXMBDQFWNB5XN67BRLNUNJ3TOGAUFU2B')" data-i18n="btn_copy">Копировать</button>
+    </div>
+    <div class="donate-row">
+      <span class="donate-label">DOGE</span>
+      <code class="donate-addr">DQMjjEAuebRrDxCicWhkb2jtUqj4HKdmDK</code>
+      <button class="btn small" onclick="copyAddr(this,'DQMjjEAuebRrDxCicWhkb2jtUqj4HKdmDK')" data-i18n="btn_copy">Копировать</button>
+    </div>
+    <div class="donate-row">
+      <span class="donate-label">SHIB (ERC20)</span>
+      <code class="donate-addr">0x50B0b1d72d007Fd0C692b2580cbA152011197CE7</code>
+      <button class="btn small" onclick="copyAddr(this,'0x50B0b1d72d007Fd0C692b2580cbA152011197CE7')" data-i18n="btn_copy">Копировать</button>
+    </div>
+  </div>
+
+  <footer data-i18n="footer_text">MORSE.PRO — учебный тренажёр азбуки Морзе</footer>
+</div>
+
+<div class="celebrate-toast" id="celebrate-toast"></div>
+
+<script>
+/* ============ DATA ============ */
+/* Знаки, общие для всех алфавитов (цифры и пунктуация International Morse — совпадают и в русском варианте) */
+var DIGIT_PUNCT_MORSE = {
+  '0':'-----','1':'.----','2':'..---','3':'...--','4':'....-','5':'.....',
+  '6':'-....','7':'--...','8':'---..','9':'----.',
+  '.':'.-.-.-',',':'--..--','?':'..--..','/':'-..-.','-':'-....-','=':'-...-'
+};
+var DIGIT_ROWS = ['0','1','2','3','4','5','6','7','8','9'];
+var PUNCT_ROWS = ['.',',','?','/','-','='];
+
+/* ---- Международная (латинская) азбука Морзе — используется для EN/UK/DE/ZH ---- */
+var LETTERS_INTL_MORSE = {
+  'A':'.-','B':'-...','C':'-.-.','D':'-..','E':'.','F':'..-.','G':'--.','H':'....',
+  'I':'..','J':'.---','K':'-.-','L':'.-..','M':'--','N':'-.','O':'---','P':'.--.',
+  'Q':'--.-','R':'.-.','S':'...','T':'-','U':'..-','V':'...-','W':'.--','X':'-..-',
+  'Y':'-.--','Z':'--..'
+};
+var MORSE_INTL = Object.assign({}, LETTERS_INTL_MORSE, DIGIT_PUNCT_MORSE);
+var LEVELS_INTL = [
+  {chars:['E','T'], label:'E T', type:'chars'},
+  {chars:['A','I','M','N'], label:'A I M N', type:'chars'},
+  {chars:['D','G','K','O'], label:'D G K O', type:'chars'},
+  {chars:['R','S','U','W'], label:'R S U W', type:'chars'},
+  {chars:['1','2','3','4','5'], label:'1–5', type:'chars'},
+  {chars:['B','C','F','H'], label:'B C F H', type:'chars'},
+  {chars:['J','L','P','Q'], label:'J L P Q', type:'chars'},
+  {chars:['V','X','Y','Z'], label:'V X Y Z', type:'chars'},
+  {chars:['6','7','8','9','0'], label:'6–0', type:'chars'},
+  {chars:['.',',','?','/','-','='], label:'. , ? / − =', type:'chars'},
+  {chars:[], label:'всё вперемешку', type:'chars'},
+  {chars:[], label:'слова', type:'words'},
+  {chars:[], label:'фразы', type:'phrases'}
+];
+var WORDS_INTL = ['SOS','CQ','DE','QTH','QRZ','QSL','HI','GM','GE','GA','TNX','PSE','ANT','KEY',
+  'TEST','RADIO','MORSE','LEVEL','HELLO','WORLD','PARIS','SIGNAL','LEARN','PRACTICE','73','88','599'];
+var PHRASES_INTL = ['CQ CQ DE','TNX FER QSO','HW CPY','GM OM','73 ES GL','FB SIGS','PSE QSL',
+  'HPE CUAGN','GA GA GA','SOS SOS SOS','DE MORSE PRO','RST 599 599'];
+var LETTER_ROWS_INTL = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'];
+
+/* ---- Настоящая русская (кириллическая) азбука Морзе — используется для RU ---- */
+var LETTERS_RU_MORSE = {
+  'А':'.-','Б':'-...','В':'.--','Г':'--.','Д':'-..','Е':'.','Ж':'...-','З':'--..',
+  'И':'..','Й':'.---','К':'-.-','Л':'.-..','М':'--','Н':'-.','О':'---','П':'.--.',
+  'Р':'.-.','С':'...','Т':'-','У':'..-','Ф':'..-.','Х':'....','Ц':'-.-.','Ч':'---.',
+  'Ш':'----','Щ':'--.-','Ъ':'--.--','Ы':'-.--','Ь':'-..-','Э':'..-..','Ю':'..--','Я':'.-.-'
+};
+var MORSE_RU = Object.assign({}, LETTERS_RU_MORSE, DIGIT_PUNCT_MORSE);
+var LEVELS_RU = [
+  {chars:['Е','Т'], label:'Е Т', type:'chars'},
+  {chars:['А','И','М','Н'], label:'А И М Н', type:'chars'},
+  {chars:['Д','Г','К','О'], label:'Д Г К О', type:'chars'},
+  {chars:['Р','С','У','В'], label:'Р С У В', type:'chars'},
+  {chars:['1','2','3','4','5'], label:'1–5', type:'chars'},
+  {chars:['Б','Ц','Ф','Х'], label:'Б Ц Ф Х', type:'chars'},
+  {chars:['Й','Л','П','Щ'], label:'Й Л П Щ', type:'chars'},
+  {chars:['Ж','З','Ь','Ы'], label:'Ж З Ь Ы', type:'chars'},
+  {chars:['6','7','8','9','0'], label:'6–0', type:'chars'},
+  {chars:['Ч','Ш','Ъ','Э','Ю','Я','.',',','?','/','-','='], label:'Ч Ш Ъ Э Ю Я + знаки', type:'chars'},
+  {chars:[], label:'всё вперемешку', type:'chars'},
+  {chars:[], label:'слова', type:'words'},
+  {chars:[], label:'фразы', type:'phrases'}
+];
+var WORDS_RU = ['ДОМ','КОТ','МАМА','МИР','ЛЕС','ГОРОД','РАДИО','МОРЗЕ','ПРИВЕТ','СВЯЗЬ',
+  'ДРУГ','ОКНО','ВОДА','НЕБО','ЗЕМЛЯ','СОЛНЦЕ','КНИГА','ЖИЗНЬ','ОГОНЬ','СТОЛ'];
+var PHRASES_RU = ['ДОБРЫЙ ДЕНЬ','КАК ДЕЛА','ПРИВЕТ ДРУГ','СПАСИБО ЗА СВЯЗЬ','ДО СВИДАНИЯ',
+  'РАД ТЕБЯ СЛЫШАТЬ','УЧУ МОРЗЕ','ХОРОШЕЙ ПОГОДЫ','ВСЕМ ДОБРА'];
+var LETTER_ROWS_RU = ['А','Б','В','Г','Д','Е','Ж','З','И','Й','К','Л','М','Н','О','П',
+  'Р','С','Т','У','Ф','Х','Ц','Ч','Ш','Щ','Ъ','Ы','Ь','Э','Ю','Я'];
+
+/* ---- активный алфавит (переключается в setLang) ---- */
+var MORSE, REV_MORSE, LEVELS, WORDS_LIST, PHRASES_LIST, LETTER_ROWS;
+var alphaSuffix = '';
+function applyAlphabet(lang){
+  if(lang==='ru'){
+    MORSE = MORSE_RU; LEVELS = LEVELS_RU; WORDS_LIST = WORDS_RU;
+    PHRASES_LIST = PHRASES_RU; LETTER_ROWS = LETTER_ROWS_RU;
+    alphaSuffix = '-ru';
+  } else {
+    MORSE = MORSE_INTL; LEVELS = LEVELS_INTL; WORDS_LIST = WORDS_INTL;
+    PHRASES_LIST = PHRASES_INTL; LETTER_ROWS = LETTER_ROWS_INTL;
+    alphaSuffix = '';
+  }
+  REV_MORSE = {};
+  for(var _k in MORSE){ REV_MORSE[MORSE[_k]] = _k; }
+}
+/* поиск кода знака: сперва в активном алфавите, иначе в обеих таблицах —
+   нужно для позывных/Q-кодов/CW-сокращений, которые всегда на латинице */
+function morseFor(ch){
+  return (MORSE && MORSE[ch]) || MORSE_INTL[ch] || MORSE_RU[ch] || '';
+}
+applyAlphabet(curLangInit());
+function curLangInit(){
+  try{ return localStorage.getItem('morse-lang') || 'ru'; }catch(e){ return 'ru'; }
+}
+
+/* ============ I18N (RU / EN / UK / DE / ZH) ============ */
+var curLang = curLangInit();
+var I18N = {
+ru:{
+ nav_theory:'Теория', nav_trainer:'Тренажёр', nav_ham:'Радиолюбителю', nav_games:'Игры',
+ hero_eyebrow:'азбука морзе · на слух и на передачу',
+ hero_h1:'От точки до профи — <span>слушай, стучи, запоминай</span>',
+ hero_p:'Изучай азбуку Морзе методом Коха: по одному новому знаку за раз, сразу на слух и в реальном темпе. Таблица знаков всегда под рукой в разделе «Теория».',
+ hero_btn_start:'Начать тренировку', hero_btn_theory:'Изучить теорию',
+ t1_title:'Точка и тире — всего два символа',
+ t1_p:'Вся азбука Морзе строится из двух элементов: короткого сигнала — <span class="chip">точка (·)</span> — и длинного — <span class="chip">тире (—)</span>. По длительности тире ровно в 3 раза длиннее точки. Всё остальное — это то, сколько тишины между сигналами.',
+ t1_cap_dot:'точка (1 ед.)', t1_cap_gap:'пауза (1 ед.)', t1_cap_dash:'тире (3 ед.)',
+ t2_title:'Паузы — тоже часть кода',
+ t2_p:'Пауза между точками и тире внутри одной буквы равна одной точке. Пауза между буквами в слове — трём точкам. Пауза между словами — семи точкам. Именно паузы отличают «···» (буква S) от трёх отдельных точек, разделённых как разные буквы.',
+ t2_cap_gap:'пауза между буквами (3 ед.)',
+ t3_title:'Метод Коха: учи на скорости, добавляй по одному',
+ t3_p1:'Самая частая ошибка новичков — учить Морзе медленно, растягивая точки и тире, а потом мучительно «разгоняться». Метод Коха работает наоборот: с первого дня знаки звучат в комфортном рабочем темпе, но начинаешь всего с 2–3 знаков. Когда узнаёшь их на слух почти без ошибок — добавляется следующий.',
+ t3_p2:'В «Тренажёре» уровни устроены именно так: 13 ступеней. Уровень 11 смешивает все выученные знаки вместе, 12 — короткие слова, 13 — целые фразы. Открывай следующий уровень, когда точность на текущем стабильно выше 80%.',
+ t4_title:'Приём и передача — два разных навыка',
+ t4_p:'Понимать Морзе на слух (приём) и самому отбивать сигналы ключом (передача) — разные умения, тренировать нужно оба. В тренажёре есть режим «Приём на слух», а также два способа передачи.',
+ t5_title:'Передача одной кнопкой — как настоящий телеграфный ключ',
+ t5_p:'В реальном телеграфном ключе нет отдельных кнопок для точки и тире — есть один рычаг. Короткое нажатие и быстрый отпуск — точка. Если удержать нажатой дольше — тире. Тренажёр сам определяет по длительности нажатия, что ты передал, и декодирует буквы в реальном времени — режим «Передача (ключ)» именно так и работает.',
+ theory_table_title:'Таблица знаков — для справки', theory_table_sub:'Держи её под рукой во время тренировки. Нажми ▶, чтобы услышать, как звучит знак.',
+ theory_letters:'Буквы', theory_digits:'Цифры', theory_punct:'Знаки препинания',
+ theory_roadmap_title:'Путь от новичка до профи',
+ theory_roadmap_sub:'13 уровней. Каждый следующий открывается, когда на текущем набрано от 15 ответов с точностью от 80%. Уровень 11 — все знаки вперемешку, 12 — слова, 13 — фразы.',
+ trainer_title:'Тренажёр', trainer_sub:'Выбери уровень на шкале ниже и режим — приём на слух, передача двумя кнопками или передача одним ключом. Прогресс сохраняется автоматически.',
+ stat_solved:'Решено', stat_acc:'Точность', stat_streak:'Текущая серия', stat_best:'Лучшая серия',
+ mode_receive:'Приём на слух', mode_send:'Передача (2 кнопки)', mode_key:'Передача (ключ)',
+ review_btn:'Повторить ошибки',
+ settings_speed:'Скорость', settings_tone:'Тон', settings_timer:'на время (60с)',
+ unit_wpm:'зн/мин', unit_hz:'Гц',
+ waiting_input:'жди ввода…', key_dot:'точка', key_dash:'тире',
+ key_pad_letter:'буква', key_pad_word:'слово',
+ btn_clear:'Очистить', btn_hear_correct:'▶ Как звучит верно', btn_check:'Проверить',
+ key_btn_label:'КЛЮЧ', key_btn_sub:'держи = тире · тапни = точка',
+ hint_card_title:'Подсказка',
+ hint_card_p:'В режиме приёма клавиатура тоже работает — печатай ответ буквой или цифрой. В режиме передачи двумя кнопками: точка — клавиша «.», тире — «-», пробел — разделитель букв (на уровнях со словами), «/» — разделитель слов, Enter — проверить. В режиме с ключом можно удерживать пробел вместо клика по кнопке.',
+ ph_word_or_phrase:'введи слово или фразу',
+ ham_title:'Инструменты радиолюбителя',
+ ham_sub:'Q-коды и CW-сокращения, тренировка позывных, имитация настоящего QSO в эфире с помехами и анализ твоей скорости передачи ключом.',
+ qcodes_title:'Q-коды и CW-сокращения', qcodes_sub:'Стандартный набор, который звучит в каждом QSO. Нажми ▶, чтобы услышать.',
+ noise_label:'Эфирный шум (QRN/QRM)',
+ noise_clean:'чистый эфир', noise_light:'лёгкий QRM', noise_notable:'заметные помехи', noise_strong:'сильные QRN',
+ callgen_title:'Генератор позывных', callgen_p:'Случайный позывной в стиле реальных радиолюбительских префиксов — для тренировки приёма как в настоящем эфире.',
+ btn_new_callsign:'Новый позывной', btn_listen:'Прослушать',
+ callquiz_title:'Тренировка позывных на слух', callquiz_hint:'Нажми «Дать позывной» — прослушай (в шуме, если включён) и введи, что услышал.',
+ ph_your_answer:'твой ответ', btn_give_callsign:'Дать позывной', btn_repeat:'▶ Повторить',
+ qso_trainer_title:'Тренажёр QSO — имитация радиосвязи',
+ qso_trainer_sub:'Проходи стандартный обмен позывной → RST → имя → QTH → 73, как в настоящей CW-связи. Партнёр «передаёт» азбукой Морзе (можно с шумом), ты отвечаешь готовыми макросами ключом.',
+ qso_partner_label:'Корреспондент', qso_step_label:'Шаг', btn_start_qso:'Начать новое QSO', btn_repeat_phrase:'Повторить последнюю фразу',
+ speed_title:'Анализ скорости передачи', speed_sub:'Каждое нажатие ключа в режиме «Передача (ключ)» и в играх записывается. Здесь — твоя реальная скорость и стабильность таймингов, а не только настройка WPM.',
+ speed_avg_label:'Твоя средняя скорость', speed_consistency_label:'Стабильность таймингов', speed_count_label:'Нажатий записано',
+ export_json_btn:'Экспортировать статистику (JSON)', export_csv_btn:'Экспортировать лог (CSV)',
+ export_note:'Экспорт содержит прогресс по уровням, историю скорости передачи и результаты игр — файл можно приложить к своему логу или разбору тренировок.',
+ savecode_title:'Личный код сохранения',
+ savecode_sub:'Прогресс уже сохраняется прямо в этом браузере автоматически. Чтобы перенести его на другое устройство или в другой браузер — без интернета и регистрации — используй 16-значный код: он хранит открытый и текущий уровень, пройденные уровни, лучшие результаты трёх игр и настройки скорости/шума.',
+ savecode_mycode_title:'Мой код', btn_refresh:'Обновить', btn_copy:'Скопировать',
+ savecode_restore_title:'Восстановить по коду', ph_16chars:'16 символов', btn_restore:'Восстановить прогресс',
+ games_title:'Игры на азбуке Морзе', games_sub:'Три аркадных режима поверх той же таблицы знаков и метода Коха — для тренировки под давлением времени и в шуме эфира.',
+ game1_title:'Охотник за позывными', game1_desc:'Слушай позывной в шуме эфира и набирай его до истечения времени. Серия без ошибок ускоряет темп.',
+ game2_title:'Сигнальный дождь', game2_desc:'Знаки падают сверху, каждый звучит морзянкой. Печатай букву, пока капсула не долетела до земли.',
+ game3_title:'QSO на скорость', game3_desc:'Быстрый радиообмен: прими RST/имя/QTH на слух и правильно ответь макросами — на время и без ошибок.',
+ hud_score:'Счёт', hud_streak:'Серия', hud_lives:'Жизни', hud_time:'Время', hud_level:'Уровень', hud_round:'Раунд',
+ hunter_hint:'слушай позывной и набирай его', ph_callsign:'позывной',
+ btn_start:'Старт', btn_repeat_short:'Повторить',
+ rain_overlay_p:'Знаки текущего уровня падают сверху и звучат азбукой Морзе. На компьютере — печатай букву на клавиатуре. На телефоне — тапай по самой падающей капсуле или по кнопкам внизу. Три пропуска — игра окончена.',
+ btn_start_game:'Начать игру',
+ btn_start_qso_speed:'Старт QSO на скорость', btn_repeat_phrase2:'Повторить фразу',
+ leaderboard_title:'Личные рекорды',
+ donate_title:'Поддержать проект', donate_p:'Если тренажёр пригодился — можно поддержать разработку донатом.',
+ footer_text:'MORSE.PRO — учебный тренажёр азбуки Морзе',
+ sound_on:'🔊 Звук', sound_off:'🔇 Звук выкл',
+ review_mode_label:'повтор ошибок', level_word:'уровень',
+ fb_correct:'Верно! ', fb_wrong_correct:'Неверно. Правильно: ', fb_wrong_was:'Неверно. Было: ',
+ celebrate_level_unlocked:'Уровень {n} открыт: {label} 🎉',
+ celebrate_time_up:'Время вышло! Решено: {n}, точность {p}%',
+ celebrate_no_mistakes:'Пока нет ошибок для повтора 👍',
+ celebrate_qso_alt:'В реальном QSO обычно отвечают иначе — продолжаем',
+ celebrate_game_over:'Игра окончена! Счёт: {n}',
+ celebrate_qso_game_over:'QSO завершено! Счёт: {n}',
+ celebrate_restored:'Прогресс восстановлен по коду 🎉',
+ game_over_caps:'ИГРА ОКОНЧЕНА', copied_text:'Скопировано',
+ restore_err_length:'Код должен содержать ровно {n} символов.',
+ restore_err_chars:'Недопустимые символы в коде.',
+ restore_err_corrupt:'Код повреждён или введён с ошибкой — проверь и попробуй снова.',
+ restore_ok:'Прогресс восстановлен!',
+ level_done_suffix:' · пройден', level_accuracy_suffix:' · точность {p}%', level_locked_suffix:' · закрыт',
+ level_all_mixed:'всё вперемешку', level_words:'слова', level_phrases:'фразы',
+ qso_label_answer_call:'Ответить своим позывным', qso_label_give_report:'Дать свой рапорт, имя и QTH', qso_label_say_goodbye:'Попрощаться и закончить связь',
+ qso_next_btn:'Дальше →', qso_finished:'QSO завершено. 73!',
+ qsog_prompt_rst:'Партнёр передаёт RST', qsog_prompt_name:'Партнёр передаёт имя', qsog_prompt_qth:'Партнёр передаёт QTH',
+ qsog_answer_suffix:' — что услышал?', qsog_answer_ph:'ответ', qsog_answer_btn:'Ответить',
+ qsog_you_label:'Я', qsog_no_answer:'(нет ответа)', qsog_correct_prefix:'Верно: ', qsog_finished_prefix:'QSO завершено. Счёт: ',
+ rain_game_over_title:'Игра окончена', rain_score_prefix:'Счёт: ', rain_again_btn:'▶ Ещё раз',
+ leaderboard_best_prefix:'лучший счёт: '
+},
+en:{
+ nav_theory:'Theory', nav_trainer:'Trainer', nav_ham:'Ham Radio', nav_games:'Games',
+ hero_eyebrow:'morse code · receiving and sending',
+ hero_h1:'From dot to pro — <span>listen, tap, remember</span>',
+ hero_p:'Learn Morse code with the Koch method: one new character at a time, by ear, at real speed from day one. The full character table is always at hand in the “Theory” tab.',
+ hero_btn_start:'Start training', hero_btn_theory:'Learn the theory',
+ t1_title:'Dot and dash — just two symbols',
+ t1_p:'All of Morse code is built from two elements: a short signal — <span class="chip">dot (·)</span> — and a long one — <span class="chip">dash (—)</span>. A dash lasts exactly 3 times longer than a dot. Everything else is about how much silence sits between the signals.',
+ t1_cap_dot:'dot (1 unit)', t1_cap_gap:'gap (1 unit)', t1_cap_dash:'dash (3 units)',
+ t2_title:'Gaps are part of the code too',
+ t2_p:'The gap between dots and dashes inside one letter equals one dot. The gap between letters in a word equals three dots. The gap between words equals seven dots. It’s exactly these gaps that turn “···” into the letter S instead of three separate dots read as different letters.',
+ t2_cap_gap:'gap between letters (3 units)',
+ t3_title:'The Koch method: train at speed, add one at a time',
+ t3_p1:'The most common beginner mistake is learning Morse slowly, dragging out dots and dashes, then painfully trying to speed up later. The Koch method works the other way: from day one characters sound at a comfortable working speed, but you start with just 2–3 characters. Once you recognize them by ear almost without mistakes, the next one is added.',
+ t3_p2:'In the Trainer, levels are built exactly this way: 13 steps. Level 11 mixes all learned characters together, 12 is short words, 13 is full phrases. Unlock the next level once your accuracy on the current one is consistently above 80%.',
+ t4_title:'Receiving and sending are two different skills',
+ t4_p:'Understanding Morse by ear (receiving) and tapping out signals with a key yourself (sending) are different skills, and both need practice. The trainer has a “Listen” mode plus two sending modes.',
+ t5_title:'Single-lever sending — like a real telegraph key',
+ t5_p:'A real telegraph key has no separate buttons for dot and dash — just one lever. A short press and quick release is a dot. Holding it longer is a dash. The trainer detects what you sent from the press duration and decodes letters in real time — that’s exactly how “Sending (key)” mode works.',
+ theory_table_title:'Character table — for reference', theory_table_sub:'Keep it handy while training. Tap ▶ to hear how a character sounds.',
+ theory_letters:'Letters', theory_digits:'Digits', theory_punct:'Punctuation',
+ theory_roadmap_title:'The path from beginner to pro',
+ theory_roadmap_sub:'13 levels. Each next one unlocks once you’ve answered at least 15 times on the current one with 80%+ accuracy. Level 11 is all characters mixed, 12 is words, 13 is phrases.',
+ trainer_title:'Trainer', trainer_sub:'Pick a level on the bar below and a mode — listening, sending with two buttons, or sending with a single key. Progress saves automatically.',
+ stat_solved:'Solved', stat_acc:'Accuracy', stat_streak:'Current streak', stat_best:'Best streak',
+ mode_receive:'Listen', mode_send:'Send (2 buttons)', mode_key:'Send (key)',
+ review_btn:'Review mistakes',
+ settings_speed:'Speed', settings_tone:'Tone', settings_timer:'timed (60s)',
+ unit_wpm:'ch/min', unit_hz:'Hz',
+ waiting_input:'waiting for input…', key_dot:'dot', key_dash:'dash',
+ key_pad_letter:'letter', key_pad_word:'word',
+ btn_clear:'Clear', btn_hear_correct:'▶ Hear the correct sound', btn_check:'Check',
+ key_btn_label:'KEY', key_btn_sub:'hold = dash · tap = dot',
+ hint_card_title:'Tip',
+ hint_card_p:'In listening mode the keyboard also works — type the letter or digit as your answer. In two-button sending mode: dot is “.”, dash is “-”, space separates letters (on word levels), “/” separates words, Enter checks. In key mode you can hold Space instead of clicking the button.',
+ ph_word_or_phrase:'type the word or phrase',
+ ham_title:'Ham radio tools',
+ ham_sub:'Q-codes and CW abbreviations, callsign training, a real-QSO simulation with band noise, and analysis of your actual keying speed.',
+ qcodes_title:'Q-codes and CW abbreviations', qcodes_sub:'The standard set heard in every QSO. Tap ▶ to hear it.',
+ noise_label:'Band noise (QRN/QRM)',
+ noise_clean:'clean band', noise_light:'light QRM', noise_notable:'noticeable interference', noise_strong:'heavy QRN',
+ callgen_title:'Callsign generator', callgen_p:'A random callsign in the style of real amateur-radio prefixes — for practicing reception as in a real band.',
+ btn_new_callsign:'New callsign', btn_listen:'Play',
+ callquiz_title:'Ear training for callsigns', callquiz_hint:'Tap “Give callsign” — listen (with noise if enabled) and type what you heard.',
+ ph_your_answer:'your answer', btn_give_callsign:'Give callsign', btn_repeat:'▶ Repeat',
+ qso_trainer_title:'QSO trainer — simulated radio contact',
+ qso_trainer_sub:'Walk through the standard exchange callsign → RST → name → QTH → 73, just like a real CW contact. The partner “sends” in Morse (optionally with noise), you reply with ready-made key macros.',
+ qso_partner_label:'Correspondent', qso_step_label:'Step', btn_start_qso:'Start a new QSO', btn_repeat_phrase:'Repeat the last phrase',
+ speed_title:'Sending-speed analysis', speed_sub:'Every key press in “Send (key)” mode and in the games is logged. This is your real speed and timing consistency — not just the WPM setting.',
+ speed_avg_label:'Your average speed', speed_consistency_label:'Timing consistency', speed_count_label:'Presses logged',
+ export_json_btn:'Export stats (JSON)', export_csv_btn:'Export log (CSV)',
+ export_note:'The export contains your level progress, sending-speed history and game results — attach the file to your own log or training review.',
+ savecode_title:'Personal save code',
+ savecode_sub:'Your progress is already saved automatically right in this browser. To move it to another device or browser — no internet or account needed — use a 16-character code: it holds your unlocked and current level, completed levels, best results in the three games, and speed/noise settings.',
+ savecode_mycode_title:'My code', btn_refresh:'Refresh', btn_copy:'Copy',
+ savecode_restore_title:'Restore from a code', ph_16chars:'16 characters', btn_restore:'Restore progress',
+ games_title:'Morse code games', games_sub:'Three arcade modes built on the same character table and Koch method — for training under time pressure and in band noise.',
+ game1_title:'Callsign Hunter', game1_desc:'Listen to a callsign through band noise and type it before time runs out. A clean streak speeds up the pace.',
+ game2_title:'Signal Rain', game2_desc:'Characters fall from the top, each sounding out in Morse. Type the letter before the capsule reaches the ground.',
+ game3_title:'QSO Speed Run', game3_desc:'Fast radio exchange: catch RST/name/QTH by ear and reply correctly with macros — against the clock, no mistakes.',
+ hud_score:'Score', hud_streak:'Streak', hud_lives:'Lives', hud_time:'Time', hud_level:'Level', hud_round:'Round',
+ hunter_hint:'listen to the callsign and type it', ph_callsign:'callsign',
+ btn_start:'Start', btn_repeat_short:'Repeat',
+ rain_overlay_p:'Characters of the current level fall from the top and sound out in Morse. On desktop — type the letter on your keyboard. On phone — tap the falling capsule itself or the buttons below. Three misses ends the game.',
+ btn_start_game:'Start game',
+ btn_start_qso_speed:'Start QSO Speed Run', btn_repeat_phrase2:'Repeat phrase',
+ leaderboard_title:'Personal bests',
+ donate_title:'Support the project', donate_p:'If this trainer helped you, you can support development with a donation.',
+ footer_text:'MORSE.PRO — a Morse code learning trainer',
+ sound_on:'🔊 Sound', sound_off:'🔇 Sound off',
+ review_mode_label:'mistake review', level_word:'level',
+ fb_correct:'Correct! ', fb_wrong_correct:'Wrong. Correct answer: ', fb_wrong_was:'Wrong. It was: ',
+ celebrate_level_unlocked:'Level {n} unlocked: {label} 🎉',
+ celebrate_time_up:'Time’s up! Solved: {n}, accuracy {p}%',
+ celebrate_no_mistakes:'No mistakes to review yet 👍',
+ celebrate_qso_alt:'In a real QSO the reply is usually different — moving on',
+ celebrate_game_over:'Game over! Score: {n}',
+ celebrate_qso_game_over:'QSO finished! Score: {n}',
+ celebrate_restored:'Progress restored from code 🎉',
+ game_over_caps:'GAME OVER', copied_text:'Copied',
+ restore_err_length:'The code must be exactly {n} characters long.',
+ restore_err_chars:'Invalid characters in the code.',
+ restore_err_corrupt:'The code is corrupted or was entered incorrectly — check it and try again.',
+ restore_ok:'Progress restored!',
+ level_done_suffix:' · completed', level_accuracy_suffix:' · accuracy {p}%', level_locked_suffix:' · locked',
+ level_all_mixed:'all mixed', level_words:'words', level_phrases:'phrases',
+ qso_label_answer_call:'Reply with your callsign', qso_label_give_report:'Give your report, name and QTH', qso_label_say_goodbye:'Say goodbye and end the contact',
+ qso_next_btn:'Next →', qso_finished:'QSO finished. 73!',
+ qsog_prompt_rst:'Partner is sending RST', qsog_prompt_name:'Partner is sending a name', qsog_prompt_qth:'Partner is sending QTH',
+ qsog_answer_suffix:' — what did you hear?', qsog_answer_ph:'answer', qsog_answer_btn:'Answer',
+ qsog_you_label:'Me', qsog_no_answer:'(no answer)', qsog_correct_prefix:'Correct: ', qsog_finished_prefix:'QSO finished. Score: ',
+ rain_game_over_title:'Game over', rain_score_prefix:'Score: ', rain_again_btn:'▶ Play again',
+ leaderboard_best_prefix:'best score: '
+},
+uk:{
+ nav_theory:'Теорія', nav_trainer:'Тренажер', nav_ham:'Радіоаматору', nav_games:'Ігри',
+ hero_eyebrow:'азбука морзе · на слух і на передачу',
+ hero_h1:'Від крапки до профі — <span>слухай, стукай, запам’ятовуй</span>',
+ hero_p:'Вивчай азбуку Морзе методом Коха: по одному новому знаку за раз, одразу на слух і в реальному темпі. Таблиця знаків завжди під рукою в розділі «Теорія».',
+ hero_btn_start:'Почати тренування', hero_btn_theory:'Вивчити теорію',
+ t1_title:'Крапка і тире — всього два символи',
+ t1_p:'Уся азбука Морзе будується з двох елементів: короткого сигналу — <span class="chip">крапка (·)</span> — і довгого — <span class="chip">тире (—)</span>. За тривалістю тире рівно втричі довше за крапку. Все інше — це те, скільки тиші між сигналами.',
+ t1_cap_dot:'крапка (1 од.)', t1_cap_gap:'пауза (1 од.)', t1_cap_dash:'тире (3 од.)',
+ t2_title:'Паузи — теж частина коду',
+ t2_p:'Пауза між крапками й тире всередині однієї літери дорівнює одній крапці. Пауза між літерами у слові — трьом крапкам. Пауза між словами — семи крапкам. Саме паузи відрізняють «···» (літера S) від трьох окремих крапок, розділених як різні літери.',
+ t2_cap_gap:'пауза між літерами (3 од.)',
+ t3_title:'Метод Коха: вчи на швидкості, додавай по одному',
+ t3_p1:'Найчастіша помилка новачків — вчити Морзе повільно, розтягуючи крапки й тире, а потім болісно «розганятися». Метод Коха працює навпаки: з першого дня знаки звучать у комфортному робочому темпі, але починаєш лише з 2–3 знаків. Коли впізнаєш їх на слух майже без помилок — додається наступний.',
+ t3_p2:'У «Тренажері» рівні влаштовані саме так: 13 сходинок. Рівень 11 змішує всі вивчені знаки разом, 12 — короткі слова, 13 — цілі фрази. Відкривай наступний рівень, коли точність на поточному стабільно вища за 80%.',
+ t4_title:'Прийом і передача — дві різні навички',
+ t4_p:'Розуміти Морзе на слух (прийом) і самому відбивати сигнали ключем (передача) — різні вміння, тренувати треба обидва. У тренажері є режим «Прийом на слух», а також два способи передачі.',
+ t5_title:'Передача однією кнопкою — як справжній телеграфний ключ',
+ t5_p:'У справжньому телеграфному ключі немає окремих кнопок для крапки й тире — є один важіль. Коротке натискання й швидке відпускання — крапка. Якщо утримати довше — тире. Тренажер сам визначає за тривалістю натискання, що ти передав, і декодує літери в реальному часі — режим «Передача (ключ)» саме так і працює.',
+ theory_table_title:'Таблиця знаків — для довідки', theory_table_sub:'Тримай її під рукою під час тренування. Натисни ▶, щоб почути, як звучить знак.',
+ theory_letters:'Літери', theory_digits:'Цифри', theory_punct:'Розділові знаки',
+ theory_roadmap_title:'Шлях від новачка до профі',
+ theory_roadmap_sub:'13 рівнів. Кожен наступний відкривається, коли на поточному набрано від 15 відповідей із точністю від 80%. Рівень 11 — усі знаки впереміш, 12 — слова, 13 — фрази.',
+ trainer_title:'Тренажер', trainer_sub:'Обери рівень на шкалі нижче та режим — прийом на слух, передача двома кнопками або передача одним ключем. Прогрес зберігається автоматично.',
+ stat_solved:'Розв’язано', stat_acc:'Точність', stat_streak:'Поточна серія', stat_best:'Найкраща серія',
+ mode_receive:'Прийом на слух', mode_send:'Передача (2 кнопки)', mode_key:'Передача (ключ)',
+ review_btn:'Повторити помилки',
+ settings_speed:'Швидкість', settings_tone:'Тон', settings_timer:'на час (60с)',
+ unit_wpm:'зн/хв', unit_hz:'Гц',
+ waiting_input:'чекаю на ввід…', key_dot:'крапка', key_dash:'тире',
+ key_pad_letter:'літера', key_pad_word:'слово',
+ btn_clear:'Очистити', btn_hear_correct:'▶ Як звучить правильно', btn_check:'Перевірити',
+ key_btn_label:'КЛЮЧ', key_btn_sub:'тримай = тире · тапни = крапка',
+ hint_card_title:'Підказка',
+ hint_card_p:'У режимі прийому клавіатура теж працює — друкуй відповідь літерою чи цифрою. У режимі передачі двома кнопками: крапка — клавіша «.», тире — «-», пробіл — розділювач літер (на рівнях зі словами), «/» — розділювач слів, Enter — перевірити. У режимі з ключем можна утримувати пробіл замість кліку по кнопці.',
+ ph_word_or_phrase:'введи слово або фразу',
+ ham_title:'Інструменти радіоаматора',
+ ham_sub:'Q-коди та CW-скорочення, тренування позивних, імітація справжнього QSO в ефірі з завадами та аналіз твоєї швидкості передачі ключем.',
+ qcodes_title:'Q-коди та CW-скорочення', qcodes_sub:'Стандартний набір, який звучить у кожному QSO. Натисни ▶, щоб почути.',
+ noise_label:'Ефірний шум (QRN/QRM)',
+ noise_clean:'чистий ефір', noise_light:'легкий QRM', noise_notable:'помітні завади', noise_strong:'сильний QRN',
+ callgen_title:'Генератор позивних', callgen_p:'Випадковий позивний у стилі реальних радіоаматорських префіксів — для тренування прийому як у справжньому ефірі.',
+ btn_new_callsign:'Новий позивний', btn_listen:'Прослухати',
+ callquiz_title:'Тренування позивних на слух', callquiz_hint:'Натисни «Дати позивний» — прослухай (у шумі, якщо увімкнено) і введи, що почув.',
+ ph_your_answer:'твоя відповідь', btn_give_callsign:'Дати позивний', btn_repeat:'▶ Повторити',
+ qso_trainer_title:'Тренажер QSO — імітація радіозв’язку',
+ qso_trainer_sub:'Проходь стандартний обмін позивний → RST → ім’я → QTH → 73, як у справжньому CW-зв’язку. Партнер «передає» азбукою Морзе (можна із шумом), ти відповідаєш готовими макросами ключем.',
+ qso_partner_label:'Кореспондент', qso_step_label:'Крок', btn_start_qso:'Почати нове QSO', btn_repeat_phrase:'Повторити останню фразу',
+ speed_title:'Аналіз швидкості передачі', speed_sub:'Кожне натискання ключа в режимі «Передача (ключ)» та в іграх записується. Тут — твоя реальна швидкість і стабільність таймінгів, а не лише налаштування WPM.',
+ speed_avg_label:'Твоя середня швидкість', speed_consistency_label:'Стабільність таймінгів', speed_count_label:'Натискань записано',
+ export_json_btn:'Експортувати статистику (JSON)', export_csv_btn:'Експортувати лог (CSV)',
+ export_note:'Експорт містить прогрес по рівнях, історію швидкості передачі та результати ігор — файл можна додати до свого логу чи розбору тренувань.',
+ savecode_title:'Особистий код збереження',
+ savecode_sub:'Прогрес уже зберігається прямо в цьому браузері автоматично. Щоб перенести його на інший пристрій чи в інший браузер — без інтернету й реєстрації — використай 16-значний код: він зберігає відкритий і поточний рівень, пройдені рівні, найкращі результати трьох ігор і налаштування швидкості/шуму.',
+ savecode_mycode_title:'Мій код', btn_refresh:'Оновити', btn_copy:'Скопіювати',
+ savecode_restore_title:'Відновити за кодом', ph_16chars:'16 символів', btn_restore:'Відновити прогрес',
+ games_title:'Ігри на азбуці Морзе', games_sub:'Три аркадні режими поверх тієї ж таблиці знаків і методу Коха — для тренування під тиском часу та в шумі ефіру.',
+ game1_title:'Мисливець за позивними', game1_desc:'Слухай позивний у шумі ефіру та набирай його до закінчення часу. Серія без помилок пришвидшує темп.',
+ game2_title:'Сигнальний дощ', game2_desc:'Знаки падають згори, кожен звучить морзянкою. Друкуй літеру, поки капсула не долетіла до землі.',
+ game3_title:'QSO на швидкість', game3_desc:'Швидкий радіообмін: прийми RST/ім’я/QTH на слух і правильно відповідай макросами — на час і без помилок.',
+ hud_score:'Рахунок', hud_streak:'Серія', hud_lives:'Життя', hud_time:'Час', hud_level:'Рівень', hud_round:'Раунд',
+ hunter_hint:'слухай позивний і набирай його', ph_callsign:'позивний',
+ btn_start:'Старт', btn_repeat_short:'Повторити',
+ rain_overlay_p:'Знаки поточного рівня падають згори і звучать азбукою Морзе. На комп’ютері — друкуй літеру на клавіатурі. На телефоні — тапай по капсулі, що падає, або по кнопках знизу. Три пропуски — гра закінчена.',
+ btn_start_game:'Почати гру',
+ btn_start_qso_speed:'Старт QSO на швидкість', btn_repeat_phrase2:'Повторити фразу',
+ leaderboard_title:'Особисті рекорди',
+ donate_title:'Підтримати проєкт', donate_p:'Якщо тренажер став у пригоді — можна підтримати розробку донатом.',
+ footer_text:'MORSE.PRO — навчальний тренажер азбуки Морзе',
+ sound_on:'🔊 Звук', sound_off:'🔇 Звук вимк',
+ review_mode_label:'повтор помилок', level_word:'рівень',
+ fb_correct:'Правильно! ', fb_wrong_correct:'Неправильно. Правильно: ', fb_wrong_was:'Неправильно. Було: ',
+ celebrate_level_unlocked:'Рівень {n} відкрито: {label} 🎉',
+ celebrate_time_up:'Час вийшов! Розв’язано: {n}, точність {p}%',
+ celebrate_no_mistakes:'Поки немає помилок для повтору 👍',
+ celebrate_qso_alt:'У реальному QSO зазвичай відповідають інакше — продовжуємо',
+ celebrate_game_over:'Гра закінчена! Рахунок: {n}',
+ celebrate_qso_game_over:'QSO завершено! Рахунок: {n}',
+ celebrate_restored:'Прогрес відновлено за кодом 🎉',
+ game_over_caps:'ГРА ЗАКІНЧЕНА', copied_text:'Скопійовано',
+ restore_err_length:'Код має містити рівно {n} символів.',
+ restore_err_chars:'Недопустимі символи в коді.',
+ restore_err_corrupt:'Код пошкоджено або введено з помилкою — перевір і спробуй ще раз.',
+ restore_ok:'Прогрес відновлено!',
+ level_done_suffix:' · пройдено', level_accuracy_suffix:' · точність {p}%', level_locked_suffix:' · закрито',
+ level_all_mixed:'все впереміш', level_words:'слова', level_phrases:'фрази',
+ qso_label_answer_call:'Відповісти своїм позивним', qso_label_give_report:'Дати свій рапорт, ім’я і QTH', qso_label_say_goodbye:'Попрощатися і закінчити зв’язок',
+ qso_next_btn:'Далі →', qso_finished:'QSO завершено. 73!',
+ qsog_prompt_rst:'Партнер передає RST', qsog_prompt_name:'Партнер передає ім’я', qsog_prompt_qth:'Партнер передає QTH',
+ qsog_answer_suffix:' — що почув?', qsog_answer_ph:'відповідь', qsog_answer_btn:'Відповісти',
+ qsog_you_label:'Я', qsog_no_answer:'(немає відповіді)', qsog_correct_prefix:'Правильно: ', qsog_finished_prefix:'QSO завершено. Рахунок: ',
+ rain_game_over_title:'Гра закінчена', rain_score_prefix:'Рахунок: ', rain_again_btn:'▶ Ще раз',
+ leaderboard_best_prefix:'найкращий рахунок: '
+},
+de:{
+ nav_theory:'Theorie', nav_trainer:'Trainer', nav_ham:'Funkamateur', nav_games:'Spiele',
+ hero_eyebrow:'morsealphabet · hören und geben',
+ hero_h1:'Vom Punkt zum Profi — <span>hören, tippen, merken</span>',
+ hero_p:'Lerne das Morsealphabet mit der Koch-Methode: ein neues Zeichen nach dem anderen, von Anfang an gehört im echten Arbeitstempo. Die Zeichentabelle ist im Reiter „Theorie“ immer griffbereit.',
+ hero_btn_start:'Training starten', hero_btn_theory:'Theorie lernen',
+ t1_title:'Punkt und Strich — nur zwei Symbole',
+ t1_p:'Das gesamte Morsealphabet besteht aus zwei Elementen: einem kurzen Signal — <span class="chip">Punkt (·)</span> — und einem langen — <span class="chip">Strich (—)</span>. Ein Strich dauert genau dreimal so lang wie ein Punkt. Der Rest ist die Frage, wie viel Stille zwischen den Signalen liegt.',
+ t1_cap_dot:'Punkt (1 Einheit)', t1_cap_gap:'Pause (1 Einheit)', t1_cap_dash:'Strich (3 Einheiten)',
+ t2_title:'Pausen sind auch Teil des Codes',
+ t2_p:'Die Pause zwischen Punkten und Strichen innerhalb eines Buchstabens entspricht einem Punkt. Die Pause zwischen Buchstaben in einem Wort entspricht drei Punkten. Die Pause zwischen Wörtern entspricht sieben Punkten. Genau diese Pausen machen aus „···“ den Buchstaben S statt drei einzelner, als verschiedene Buchstaben gelesener Punkte.',
+ t2_cap_gap:'Pause zwischen Buchstaben (3 Einheiten)',
+ t3_title:'Die Koch-Methode: im Tempo üben, eins nach dem anderen hinzufügen',
+ t3_p1:'Der häufigste Anfängerfehler ist, Morsezeichen langsam zu lernen, Punkte und Striche zu dehnen und später mühsam schneller zu werden. Die Koch-Methode macht es umgekehrt: Vom ersten Tag an klingen die Zeichen im angenehmen Arbeitstempo, du beginnst aber mit nur 2–3 Zeichen. Erkennst du sie fast fehlerfrei, kommt das nächste dazu.',
+ t3_p2:'Im „Trainer“ sind die Level genau so aufgebaut: 13 Stufen. Level 11 mischt alle gelernten Zeichen, 12 sind kurze Wörter, 13 ganze Sätze. Schalte das nächste Level frei, sobald deine Genauigkeit im aktuellen dauerhaft über 80% liegt.',
+ t4_title:'Empfangen und Geben — zwei verschiedene Fertigkeiten',
+ t4_p:'Morsezeichen zu verstehen (Empfangen) und selbst mit der Taste zu geben (Senden) sind unterschiedliche Fähigkeiten, beide müssen geübt werden. Der Trainer hat einen „Hören“-Modus sowie zwei Sendemodi.',
+ t5_title:'Senden mit einem Hebel — wie eine echte Telegrafentaste',
+ t5_p:'Eine echte Telegrafentaste hat keine getrennten Tasten für Punkt und Strich — nur einen Hebel. Kurzes Drücken und schnelles Loslassen ist ein Punkt. Länger halten ergibt einen Strich. Der Trainer erkennt anhand der Druckdauer, was du gesendet hast, und dekodiert die Buchstaben in Echtzeit — genau so funktioniert der Modus „Senden (Taste)“.',
+ theory_table_title:'Zeichentabelle — zum Nachschlagen', theory_table_sub:'Halte sie beim Training griffbereit. Tippe ▶, um zu hören, wie ein Zeichen klingt.',
+ theory_letters:'Buchstaben', theory_digits:'Ziffern', theory_punct:'Satzzeichen',
+ theory_roadmap_title:'Der Weg vom Anfänger zum Profi',
+ theory_roadmap_sub:'13 Level. Das nächste wird freigeschaltet, sobald du im aktuellen mindestens 15 Antworten mit mindestens 80% Genauigkeit gegeben hast. Level 11 mischt alle Zeichen, 12 sind Wörter, 13 sind Sätze.',
+ trainer_title:'Trainer', trainer_sub:'Wähle unten ein Level auf der Leiste und einen Modus — Hören, Senden mit zwei Tasten oder Senden mit einer Taste. Der Fortschritt wird automatisch gespeichert.',
+ stat_solved:'Gelöst', stat_acc:'Genauigkeit', stat_streak:'Aktuelle Serie', stat_best:'Beste Serie',
+ mode_receive:'Hören', mode_send:'Senden (2 Tasten)', mode_key:'Senden (Taste)',
+ review_btn:'Fehler wiederholen',
+ settings_speed:'Geschwindigkeit', settings_tone:'Ton', settings_timer:'auf Zeit (60s)',
+ unit_wpm:'Zch/Min', unit_hz:'Hz',
+ waiting_input:'warte auf Eingabe…', key_dot:'Punkt', key_dash:'Strich',
+ key_pad_letter:'Buchstabe', key_pad_word:'Wort',
+ btn_clear:'Löschen', btn_hear_correct:'▶ Richtigen Klang hören', btn_check:'Prüfen',
+ key_btn_label:'TASTE', key_btn_sub:'halten = Strich · tippen = Punkt',
+ hint_card_title:'Tipp',
+ hint_card_p:'Im Hörmodus funktioniert auch die Tastatur — tippe die Antwort als Buchstabe oder Ziffer. Im Zwei-Tasten-Sendemodus: Punkt ist „.“, Strich ist „-“, Leertaste trennt Buchstaben (bei Wort-Levels), „/“ trennt Wörter, Enter prüft. Im Tastenmodus kann man statt zu klicken die Leertaste gedrückt halten.',
+ ph_word_or_phrase:'Wort oder Satz eingeben',
+ ham_title:'Werkzeuge für Funkamateure',
+ ham_sub:'Q-Codes und CW-Abkürzungen, Rufzeichentraining, Simulation eines echten QSO mit Bandrauschen und Analyse deiner tatsächlichen Sendegeschwindigkeit.',
+ qcodes_title:'Q-Codes und CW-Abkürzungen', qcodes_sub:'Das Standardset, das in jedem QSO vorkommt. Tippe ▶, um es zu hören.',
+ noise_label:'Bandrauschen (QRN/QRM)',
+ noise_clean:'sauberes Band', noise_light:'leichtes QRM', noise_notable:'merkliche Störungen', noise_strong:'starkes QRN',
+ callgen_title:'Rufzeichen-Generator', callgen_p:'Ein zufälliges Rufzeichen im Stil echter Amateurfunk-Präfixe — zum Üben des Empfangs wie im echten Band.',
+ btn_new_callsign:'Neues Rufzeichen', btn_listen:'Abspielen',
+ callquiz_title:'Rufzeichen nach Gehör üben', callquiz_hint:'Tippe „Rufzeichen geben“ — höre zu (mit Rauschen, falls aktiviert) und tippe, was du gehört hast.',
+ ph_your_answer:'deine Antwort', btn_give_callsign:'Rufzeichen geben', btn_repeat:'▶ Wiederholen',
+ qso_trainer_title:'QSO-Trainer — simulierter Funkkontakt',
+ qso_trainer_sub:'Durchlaufe den Standardaustausch Rufzeichen → RST → Name → QTH → 73, wie in einem echten CW-Kontakt. Der Partner „sendet“ per Morsecode (optional mit Rauschen), du antwortest mit fertigen Tasten-Makros.',
+ qso_partner_label:'Gegenstation', qso_step_label:'Schritt', btn_start_qso:'Neues QSO starten', btn_repeat_phrase:'Letzten Satz wiederholen',
+ speed_title:'Analyse der Sendegeschwindigkeit', speed_sub:'Jeder Tastendruck im Modus „Senden (Taste)“ und in den Spielen wird protokolliert. Hier siehst du deine echte Geschwindigkeit und Timing-Konstanz — nicht nur die WPM-Einstellung.',
+ speed_avg_label:'Deine Durchschnittsgeschwindigkeit', speed_consistency_label:'Timing-Konstanz', speed_count_label:'Erfasste Anschläge',
+ export_json_btn:'Statistik exportieren (JSON)', export_csv_btn:'Protokoll exportieren (CSV)',
+ export_note:'Der Export enthält den Levelfortschritt, den Verlauf der Sendegeschwindigkeit und die Spielergebnisse — die Datei kann deinem eigenen Logbuch oder deiner Trainingsauswertung beigefügt werden.',
+ savecode_title:'Persönlicher Speichercode',
+ savecode_sub:'Dein Fortschritt wird bereits automatisch in diesem Browser gespeichert. Um ihn auf ein anderes Gerät oder einen anderen Browser zu übertragen — ganz ohne Internet oder Konto — nutze einen 16-stelligen Code: Er enthält das freigeschaltete und aktuelle Level, abgeschlossene Level, die besten Ergebnisse der drei Spiele sowie die Geschwindigkeits-/Rauscheinstellungen.',
+ savecode_mycode_title:'Mein Code', btn_refresh:'Aktualisieren', btn_copy:'Kopieren',
+ savecode_restore_title:'Mit Code wiederherstellen', ph_16chars:'16 Zeichen', btn_restore:'Fortschritt wiederherstellen',
+ games_title:'Morsecode-Spiele', games_sub:'Drei Arcade-Modi auf Basis derselben Zeichentabelle und Koch-Methode — zum Trainieren unter Zeitdruck und im Bandrauschen.',
+ game1_title:'Rufzeichenjäger', game1_desc:'Höre ein Rufzeichen im Bandrauschen und tippe es, bevor die Zeit abläuft. Eine fehlerfreie Serie beschleunigt das Tempo.',
+ game2_title:'Signalregen', game2_desc:'Zeichen fallen von oben, jedes ertönt in Morsecode. Tippe den Buchstaben, bevor die Kapsel den Boden erreicht.',
+ game3_title:'QSO-Speedrun', game3_desc:'Schneller Funkaustausch: erfasse RST/Name/QTH nach Gehör und antworte korrekt mit Makros — auf Zeit, ohne Fehler.',
+ hud_score:'Punkte', hud_streak:'Serie', hud_lives:'Leben', hud_time:'Zeit', hud_level:'Level', hud_round:'Runde',
+ hunter_hint:'höre das Rufzeichen und tippe es', ph_callsign:'Rufzeichen',
+ btn_start:'Start', btn_repeat_short:'Wiederholen',
+ rain_overlay_p:'Zeichen des aktuellen Levels fallen von oben und ertönen in Morsecode. Am PC — tippe den Buchstaben auf der Tastatur. Am Handy — tippe auf die fallende Kapsel selbst oder auf die Tasten unten. Drei Fehltreffer beenden das Spiel.',
+ btn_start_game:'Spiel starten',
+ btn_start_qso_speed:'QSO-Speedrun starten', btn_repeat_phrase2:'Satz wiederholen',
+ leaderboard_title:'Persönliche Bestleistungen',
+ donate_title:'Projekt unterstützen', donate_p:'Wenn dir der Trainer geholfen hat, kannst du die Entwicklung mit einer Spende unterstützen.',
+ footer_text:'MORSE.PRO — Lerntrainer für das Morsealphabet',
+ sound_on:'🔊 Ton', sound_off:'🔇 Ton aus',
+ review_mode_label:'Fehlerwiederholung', level_word:'Level',
+ fb_correct:'Richtig! ', fb_wrong_correct:'Falsch. Richtig wäre: ', fb_wrong_was:'Falsch. Es war: ',
+ celebrate_level_unlocked:'Level {n} freigeschaltet: {label} 🎉',
+ celebrate_time_up:'Zeit ist um! Gelöst: {n}, Genauigkeit {p}%',
+ celebrate_no_mistakes:'Noch keine Fehler zum Wiederholen 👍',
+ celebrate_qso_alt:'In einem echten QSO antwortet man meist anders — weiter geht’s',
+ celebrate_game_over:'Spiel vorbei! Punkte: {n}',
+ celebrate_qso_game_over:'QSO beendet! Punkte: {n}',
+ celebrate_restored:'Fortschritt aus Code wiederhergestellt 🎉',
+ game_over_caps:'SPIEL VORBEI', copied_text:'Kopiert',
+ restore_err_length:'Der Code muss genau {n} Zeichen lang sein.',
+ restore_err_chars:'Ungültige Zeichen im Code.',
+ restore_err_corrupt:'Der Code ist beschädigt oder wurde falsch eingegeben — prüfe ihn und versuche es erneut.',
+ restore_ok:'Fortschritt wiederhergestellt!',
+ level_done_suffix:' · abgeschlossen', level_accuracy_suffix:' · Genauigkeit {p}%', level_locked_suffix:' · gesperrt',
+ level_all_mixed:'alles gemischt', level_words:'Wörter', level_phrases:'Sätze',
+ qso_label_answer_call:'Mit eigenem Rufzeichen antworten', qso_label_give_report:'Eigenen Rapport, Namen und QTH geben', qso_label_say_goodbye:'Verabschieden und Kontakt beenden',
+ qso_next_btn:'Weiter →', qso_finished:'QSO beendet. 73!',
+ qsog_prompt_rst:'Partner sendet RST', qsog_prompt_name:'Partner sendet einen Namen', qsog_prompt_qth:'Partner sendet QTH',
+ qsog_answer_suffix:' — was hast du gehört?', qsog_answer_ph:'Antwort', qsog_answer_btn:'Antworten',
+ qsog_you_label:'Ich', qsog_no_answer:'(keine Antwort)', qsog_correct_prefix:'Richtig: ', qsog_finished_prefix:'QSO beendet. Punkte: ',
+ rain_game_over_title:'Spiel vorbei', rain_score_prefix:'Punkte: ', rain_again_btn:'▶ Nochmal',
+ leaderboard_best_prefix:'Bestleistung: '
+},
+zh:{
+ nav_theory:'理论', nav_trainer:'训练', nav_ham:'业余无线电', nav_games:'游戏',
+ hero_eyebrow:'摩尔斯电码 · 听音与发报',
+ hero_h1:'从零基础到高手 — <span>聆听、敲击、记忆</span>',
+ hero_p:'用科赫法学习摩尔斯电码：每次只学一个新符号，从第一天起就以真实速度听音训练。字符对照表始终可以在「理论」页查看。',
+ hero_btn_start:'开始训练', hero_btn_theory:'学习理论',
+ t1_title:'点和划 — 只有两个符号',
+ t1_p:'整个摩尔斯电码只由两种元素构成：短信号 — <span class="chip">点 (·)</span> — 和长信号 — <span class="chip">划 (—)</span>。划的持续时间正好是点的3倍。其余的区别，只在于信号之间静音的长短。',
+ t1_cap_dot:'点（1 单位）', t1_cap_gap:'间隔（1 单位）', t1_cap_dash:'划（3 单位）',
+ t2_title:'间隔也是编码的一部分',
+ t2_p:'同一个字母内点划之间的间隔等于一个点。同一单词内字母之间的间隔等于三个点。单词之间的间隔等于七个点。正是这些间隔，让「···」被识别为字母 S，而不是被拆成三个独立的点。',
+ t2_cap_gap:'字母间间隔（3 单位）',
+ t3_title:'科赫法：以正常速度训练，逐个添加新符号',
+ t3_p1:'初学者最常见的错误，是把摩尔斯电码放慢学习——拉长点划的时长，之后再痛苦地提速。科赫法正好相反：从第一天起，符号就以舒适的实际工作速度播放，但一开始只学2–3个符号。当你几乎能无误地听出它们时，再加入下一个。',
+ t3_p2:'在「训练」页面中，等级正是这样设计的：共13个等级。第11级把已学的所有符号混合在一起，第12级是短单词，第13级是完整短语。当当前等级的正确率稳定超过80%时，就可以解锁下一级。',
+ t4_title:'接收和发送是两种不同的技能',
+ t4_p:'凭听觉理解摩尔斯电码（接收）和用电键自己敲出信号（发送）是两种不同的能力，都需要练习。训练器提供「听音接收」模式，以及两种发送方式。',
+ t5_title:'单键发送 — 就像真正的电报键',
+ t5_p:'真正的电报键没有分开的点键和划键——只有一个杠杆。短按并快速松开是一个点；按住较长时间就是一个划。训练器会根据按键时长自动判断你发送的内容，并实时解码字母——「发送（电键）」模式正是这样工作的。',
+ theory_table_title:'字符对照表 — 供查阅', theory_table_sub:'训练时把它放在手边。点击 ▶ 即可听到该符号的声音。',
+ theory_letters:'字母', theory_digits:'数字', theory_punct:'标点符号',
+ theory_roadmap_title:'从新手到高手的进阶之路',
+ theory_roadmap_sub:'共13个等级。当前等级至少答题15次且正确率达到80%以上时，下一级即可解锁。第11级为所有符号混合，第12级为单词，第13级为短语。',
+ trainer_title:'训练器', trainer_sub:'在下方的进度条上选择等级和模式——听音接收、双键发送或单键发送。进度会自动保存。',
+ stat_solved:'已完成', stat_acc:'正确率', stat_streak:'当前连击', stat_best:'最佳连击',
+ mode_receive:'听音接收', mode_send:'发送（双键）', mode_key:'发送（电键）',
+ review_btn:'复习错题',
+ settings_speed:'速度', settings_tone:'音调', settings_timer:'限时（60秒）',
+ unit_wpm:'字符/分', unit_hz:'赫兹',
+ waiting_input:'等待输入…', key_dot:'点', key_dash:'划',
+ key_pad_letter:'字母', key_pad_word:'单词',
+ btn_clear:'清除', btn_hear_correct:'▶ 听正确发音', btn_check:'检查',
+ key_btn_label:'电键', key_btn_sub:'按住 = 划 · 轻点 = 点',
+ hint_card_title:'提示',
+ hint_card_p:'在接收模式下也可以用键盘——直接输入字母或数字作为答案。在双键发送模式中：点对应「.」键，划对应「-」键，空格用于分隔字母（在单词等级中），「/」用于分隔单词，Enter 检查答案。在电键模式下，可以按住空格键代替点击按钮。',
+ ph_word_or_phrase:'输入单词或短语',
+ ham_title:'业余无线电工具',
+ ham_sub:'Q简语与CW缩写、呼号训练、带有干扰的真实QSO模拟，以及对你实际发报速度的分析。',
+ qcodes_title:'Q简语与CW缩写', qcodes_sub:'每次QSO中都会用到的标准缩写集。点击 ▶ 即可听到发音。',
+ noise_label:'电台噪声（QRN/QRM）',
+ noise_clean:'信道干净', noise_light:'轻微QRM', noise_notable:'明显干扰', noise_strong:'强烈QRN',
+ callgen_title:'呼号生成器', callgen_p:'按真实业余无线电前缀风格生成的随机呼号——用于模拟真实电台环境下的接收训练。',
+ btn_new_callsign:'生成新呼号', btn_listen:'播放',
+ callquiz_title:'呼号听力训练', callquiz_hint:'点击「给出呼号」——听（如已开启噪声则在噪声中听）并输入你听到的内容。',
+ ph_your_answer:'你的答案', btn_give_callsign:'给出呼号', btn_repeat:'▶ 重播',
+ qso_trainer_title:'QSO 训练器 — 模拟电台通联',
+ qso_trainer_sub:'像真实的CW通联一样，完成呼号 → 信号报告(RST) → 姓名 → 位置(QTH) → 73 的标准交流流程。对方用摩尔斯电码「发送」（可叠加噪声），你用现成的宏指令通过电键回复。',
+ qso_partner_label:'对方电台', qso_step_label:'步骤', btn_start_qso:'开始新的QSO', btn_repeat_phrase:'重播上一句',
+ speed_title:'发报速度分析', speed_sub:'在「发送（电键）」模式和游戏中，每次按键都会被记录。这里显示的是你真实的速度和节奏稳定性，而不仅仅是WPM设置值。',
+ speed_avg_label:'你的平均速度', speed_consistency_label:'节奏稳定性', speed_count_label:'已记录按键次数',
+ export_json_btn:'导出统计数据（JSON）', export_csv_btn:'导出日志（CSV）',
+ export_note:'导出内容包含各等级进度、发报速度历史以及游戏成绩——可将该文件附加到你自己的日志或训练复盘中。',
+ savecode_title:'个人存档码',
+ savecode_sub:'你的进度已经自动保存在当前浏览器中。若要迁移到其他设备或浏览器——无需联网、无需注册——可使用一个16位存档码：它保存了已解锁与当前等级、已完成的等级、三个游戏的最佳成绩，以及速度/噪声设置。',
+ savecode_mycode_title:'我的存档码', btn_refresh:'刷新', btn_copy:'复制',
+ savecode_restore_title:'通过存档码恢复', ph_16chars:'16位字符', btn_restore:'恢复进度',
+ games_title:'摩尔斯电码游戏', games_sub:'基于同一套字符表和科赫法的三种街机模式——用于在时间压力和电台噪声下进行训练。',
+ game1_title:'呼号猎人', game1_desc:'在电台噪声中听呼号，并在时间耗尽前输入它。连续答对会加快节奏。',
+ game2_title:'信号雨', game2_desc:'符号从顶部落下，每个都以摩尔斯电码发音。在胶囊落地前输入对应字母。',
+ game3_title:'QSO 极速挑战', game3_desc:'快速电台交流：凭听力捕捉RST/姓名/QTH并用宏指令正确回复——限时且不能出错。',
+ hud_score:'分数', hud_streak:'连击', hud_lives:'生命', hud_time:'时间', hud_level:'等级', hud_round:'回合',
+ hunter_hint:'听呼号并输入它', ph_callsign:'呼号',
+ btn_start:'开始', btn_repeat_short:'重播',
+ rain_overlay_p:'当前等级的符号从顶部落下，并以摩尔斯电码发音。电脑上——用键盘输入字母。手机上——直接点击下落的胶囊，或点击下方按钮。三次失误游戏结束。',
+ btn_start_game:'开始游戏',
+ btn_start_qso_speed:'开始QSO极速挑战', btn_repeat_phrase2:'重播短语',
+ leaderboard_title:'个人最佳成绩',
+ donate_title:'支持本项目', donate_p:'如果这个训练器对你有帮助，欢迎通过捐赠支持后续开发。',
+ footer_text:'MORSE.PRO — 摩尔斯电码学习训练器',
+ sound_on:'🔊 声音', sound_off:'🔇 声音关闭',
+ review_mode_label:'错题复习', level_word:'等级',
+ fb_correct:'正确！', fb_wrong_correct:'错误。正确答案：', fb_wrong_was:'错误。正确答案是：',
+ celebrate_level_unlocked:'等级 {n} 已解锁：{label} 🎉',
+ celebrate_time_up:'时间到！已完成 {n} 题，正确率 {p}%',
+ celebrate_no_mistakes:'目前还没有可复习的错题 👍',
+ celebrate_qso_alt:'在真实QSO中通常会用不同的方式回复 — 继续',
+ celebrate_game_over:'游戏结束！分数：{n}',
+ celebrate_qso_game_over:'QSO已完成！分数：{n}',
+ celebrate_restored:'已通过存档码恢复进度 🎉',
+ game_over_caps:'游戏结束', copied_text:'已复制',
+ restore_err_length:'存档码必须正好是 {n} 位字符。',
+ restore_err_chars:'存档码中包含无效字符。',
+ restore_err_corrupt:'存档码已损坏或输入有误 — 请检查后重试。',
+ restore_ok:'进度已恢复！',
+ level_done_suffix:' · 已完成', level_accuracy_suffix:' · 正确率 {p}%', level_locked_suffix:' · 已锁定',
+ level_all_mixed:'全部混合', level_words:'单词', level_phrases:'短语',
+ qso_label_answer_call:'用你的呼号回复', qso_label_give_report:'给出你的信号报告、姓名和位置', qso_label_say_goodbye:'道别并结束通联',
+ qso_next_btn:'下一步 →', qso_finished:'QSO 已完成。73！',
+ qsog_prompt_rst:'对方正在发送RST', qsog_prompt_name:'对方正在发送姓名', qsog_prompt_qth:'对方正在发送QTH',
+ qsog_answer_suffix:' — 你听到了什么？', qsog_answer_ph:'答案', qsog_answer_btn:'回答',
+ qsog_you_label:'我', qsog_no_answer:'（未作答）', qsog_correct_prefix:'正确：', qsog_finished_prefix:'QSO已完成。分数：',
+ rain_game_over_title:'游戏结束', rain_score_prefix:'分数：', rain_again_btn:'▶ 再来一次',
+ leaderboard_best_prefix:'最佳分数：'
+}
+};
+var QCODE_DESC = {
+ru:{CQ:'всем, вызов в эфир',DE:'от (мой позывной)',RST:'рапорт: разборч.-сила-тон','599':'отличный сигнал (пример RST)',TNX:'спасибо',PSE:'пожалуйста','HW?':'как слышите?',GA:'добрый день',GM:'доброе утро',GE:'добрый вечер',OM:'старина (к мужчине)',YL:'девушка/женщина',WX:'погода',NAME:'имя',QTH:'местоположение',QRZ:'кто вызывает?',QRM:'помехи от станций',QRN:'атмосферные помехи',QSB:'замирание сигнала',QRP:'малая мощность',QSY:'сменить частоту',K:'приём, продолжайте',KN:'приём только для указанной станции',AR:'конец передачи',SK:'конец связи',BK:'разрыв/перебивание','73':'наилучшие пожелания','88':'целую (к YL)'},
+en:{CQ:'calling anyone, general call',DE:'from (my callsign)',RST:'report: readability-strength-tone','599':'excellent signal (RST example)',TNX:'thanks',PSE:'please','HW?':'how do you copy?',GA:'good afternoon',GM:'good morning',GE:'good evening',OM:'old man (to a male op)',YL:'young lady',WX:'weather',NAME:'name',QTH:'location',QRZ:'who is calling?',QRM:'man-made interference',QRN:'atmospheric noise',QSB:'fading signal',QRP:'low power',QSY:'change frequency',K:'go ahead, over',KN:'over, only for the named station',AR:'end of message',SK:'end of contact',BK:'break-in / interrupt','73':'best regards','88':'love and kisses (to YL)'},
+uk:{CQ:'загальний виклик в ефір',DE:'від (мій позивний)',RST:'рапорт: розбірливість-сила-тон','599':'відмінний сигнал (приклад RST)',TNX:'дякую',PSE:'будь ласка','HW?':'як чуєте?',GA:'добрий день',GM:'доброго ранку',GE:'добрий вечір',OM:'старий (до чоловіка)',YL:'дівчина/жінка',WX:'погода',NAME:"ім'я",QTH:'місцезнаходження',QRZ:'хто викликає?',QRM:'завади від станцій',QRN:'атмосферні завади',QSB:'завмирання сигналу',QRP:'мала потужність',QSY:'змінити частоту',K:'прийом, продовжуйте',KN:'прийом лише для вказаної станції',AR:'кінець передачі',SK:"кінець зв'язку",BK:'переривання',"73":'найкращі побажання',"88":'цілую (до YL)'},
+de:{CQ:'allgemeiner Anruf',DE:'von (mein Rufzeichen)',RST:'Rapport: Lesbarkeit-Stärke-Ton','599':'ausgezeichnetes Signal (RST-Beispiel)',TNX:'danke',PSE:'bitte','HW?':'wie empfangen Sie mich?',GA:'guten Tag',GM:'guten Morgen',GE:'guten Abend',OM:'alter Mann (Anrede an OP)',YL:'junge Dame',WX:'Wetter',NAME:'Name',QTH:'Standort',QRZ:'wer ruft?',QRM:'Störungen durch Stationen',QRN:'atmosphärische Störungen',QSB:'Schwund/Fading',QRP:'geringe Sendeleistung',QSY:'Frequenz wechseln',K:'kommen, bitte',KN:'kommen, nur für die genannte Station',AR:'Ende der Meldung',SK:'Ende der Verbindung',BK:'unterbrechen','73':'beste Grüße','88':'Küsse (an YL)'},
+zh:{CQ:'呼叫任何人（总呼）',DE:'来自（我的呼号）',RST:'信号报告：可读度-强度-音调','599':'极佳信号（RST示例）',TNX:'谢谢',PSE:'请','HW?':'能听到我吗？',GA:'下午好',GM:'早上好',GE:'晚上好',OM:'老兄（对男台称呼）',YL:'年轻女士',WX:'天气',NAME:'姓名',QTH:'位置',QRZ:'是谁在呼叫？',QRM:'人为干扰',QRN:'天电干扰',QSB:'信号衰落',QRP:'小功率',QSY:'更换频率',K:'请讲，请回答',KN:'请讲，仅限指定电台回答',AR:'通报结束',SK:'通联结束',BK:'插话/打断','73':'致以最美好的祝愿','88':'亲亲（对YL）'}
+};
+function t(key, vars){
+  var s = (I18N[curLang] && I18N[curLang][key]) || (I18N.ru && I18N.ru[key]) || key;
+  if(vars){ for(var k in vars){ s = s.split('{'+k+'}').join(vars[k]); } }
+  return s;
+}
+function applyI18n(){
+  document.documentElement.lang = curLang;
+  document.querySelectorAll('[data-i18n]').forEach(function(el){
+    el.textContent = t(el.getAttribute('data-i18n'));
+  });
+  document.querySelectorAll('[data-i18n-html]').forEach(function(el){
+    el.innerHTML = t(el.getAttribute('data-i18n-html'));
+  });
+  document.querySelectorAll('[data-i18n-ph]').forEach(function(el){
+    el.setAttribute('placeholder', t(el.getAttribute('data-i18n-ph')));
+  });
+  document.querySelectorAll('.lang-btn').forEach(function(b){ b.classList.toggle('active', b.dataset.lang===curLang); });
+  document.getElementById('sound-toggle-btn').textContent = soundOn ? t('sound_on') : t('sound_off');
+  onNoiseChangeSilent(document.getElementById('ham-noise-slider') ? document.getElementById('ham-noise-slider').value : 0);
+  renderTheoryTables();
+  renderQcodes();
+  renderRoadmap('roadmap');
+  renderRoadmap('theory-roadmap');
+  renderGamesLeaderboard();
+  nextQuestion();
+}
+function setLang(lang){
+  curLang = lang;
+  applyAlphabet(lang);
+  try{ localStorage.setItem('morse-lang', lang); }catch(e){}
+  applyI18n();
+}
+function levelLabel(idx0){
+  if(idx0===10) return t('level_all_mixed');
+  if(idx0===11) return t('level_words');
+  if(idx0===12) return t('level_phrases');
+  return LEVELS[idx0].label;
+}
+
+/* ============ STATE ============ */
+var currentView = 'theory';
+var currentMode = 'receive';
+var practiceLevel = 1;
+var unlockedLevel = 1;
+var levelStats = {};
+var sessionSolved = 0, sessionCorrect = 0, streak = 0, bestStreak = 0;
+var mistakes = [];
+var reviewMode = false;
+var soundOn = true;
+var wpm = 15, toneFreq = 600;
+var timerMode = false, timerHandle = null, timerLeft = 60;
+
+var curTarget = null, curCode = null;
+var answered = false;
+var sendInput = '';
+var audioCtx = null;
+
+/* key-mode state */
+var keyPressStart = null;
+var gapTimer = null, wordGapTimer = null;
+var symbolBuffer = '', decodedText = '';
+var liveOsc = null, liveGain = null;
+
+/* ham-tools / games state */
+var noiseLevel = 0;
+var keySpeedLog = [];
+var gameScores = {hunter:0, rain:0, qso:0};
+var curCallsign = null;
+var activeGame = null;
+
+/* ============ AUDIO ============ */
+function ditMs(){ return 1200 / wpm; }
+function ensureAudio(){
+  if(!audioCtx){
+    try{ audioCtx = new (window.AudioContext || window.webkitAudioContext)(); }catch(e){}
+  }
+  if(audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
+  return audioCtx;
+}
+function beep(durationMs){
+  return new Promise(function(resolve){
+    if(!soundOn){ setTimeout(resolve, durationMs); return; }
+    var ctx = ensureAudio();
+    if(!ctx){ setTimeout(resolve, durationMs); return; }
+    var osc = ctx.createOscillator();
+    var gain = ctx.createGain();
+    osc.type = 'sine';
+    osc.frequency.value = toneFreq;
+    var now = ctx.currentTime;
+    var dur = durationMs/1000;
+    var attack = Math.min(0.008, dur/4);
+    gain.gain.setValueAtTime(0, now);
+    gain.gain.linearRampToValueAtTime(0.32, now+attack);
+    gain.gain.setValueAtTime(0.32, now+dur-attack);
+    gain.gain.linearRampToValueAtTime(0, now+dur);
+    osc.connect(gain); gain.connect(ctx.destination);
+    osc.start(now); osc.stop(now+dur+0.005);
+    setTimeout(resolve, durationMs);
+  });
+}
+function silence(durationMs){ return new Promise(function(resolve){ setTimeout(resolve, durationMs); }); }
+async function playCode(code){
+  var d = ditMs();
+  for(var i=0;i<code.length;i++){
+    var sym = code[i];
+    await beep(sym==='.' ? d : d*3);
+    if(i < code.length-1) await silence(d);
+  }
+}
+async function playChar(ch){ var c=morseFor(ch); if(c) await playCode(c); }
+async function playText(str){
+  var d = ditMs();
+  var words = String(str).trim().split(/\s+/);
+  for(var w=0; w<words.length; w++){
+    var letters = words[w].split('');
+    for(var i=0;i<letters.length;i++){
+      var c = morseFor(letters[i]);
+      if(c) await playCode(c);
+      if(i<letters.length-1) await silence(d*3);
+    }
+    if(w<words.length-1) await silence(d*7);
+  }
+}
+/* ---- band noise (QRN/QRM simulation) ---- */
+function createNoiseSource(gainVal){
+  var ctx = ensureAudio();
+  if(!ctx) return null;
+  var bufferSize = 2*ctx.sampleRate;
+  var buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+  var data = buffer.getChannelData(0);
+  for(var i=0;i<bufferSize;i++){ data[i] = Math.random()*2-1; }
+  var src = ctx.createBufferSource();
+  src.buffer = buffer; src.loop = true;
+  var filter = ctx.createBiquadFilter();
+  filter.type = 'bandpass'; filter.frequency.value = toneFreq; filter.Q.value = 0.5;
+  var gain = ctx.createGain();
+  var now = ctx.currentTime;
+  gain.gain.setValueAtTime(0, now);
+  gain.gain.linearRampToValueAtTime(gainVal, now+0.15);
+  src.connect(filter); filter.connect(gain); gain.connect(ctx.destination);
+  src.start();
+  return {src:src, gain:gain, ctx:ctx};
+}
+function stopNoiseSourceObj(obj){
+  if(!obj) return;
+  try{
+    var now = obj.ctx.currentTime;
+    obj.gain.gain.linearRampToValueAtTime(0, now+0.15);
+    obj.src.stop(now+0.2);
+  }catch(e){}
+}
+async function playTextWithNoise(str, level){
+  var lvl = (level===undefined || level===null) ? noiseLevel : level;
+  var n = null;
+  if(lvl>0 && soundOn) n = createNoiseSource(lvl*0.5);
+  await playText(str);
+  stopNoiseSourceObj(n);
+}
+function onNoiseChange(v){
+  noiseLevel = parseInt(v,10)/100;
+  var out = document.getElementById('ham-noise-out');
+  if(out) out.textContent = v;
+  var badge = document.getElementById('noise-badge');
+  if(badge) badge.textContent = noiseLevel===0 ? 'чистый эфир' : (noiseLevel<0.3 ? 'лёгкий QRM' : (noiseLevel<0.6 ? 'заметные помехи' : 'сильные QRN'));
+  saveSettings();
+}
+
+function startLiveTone(){
+  if(!soundOn) return;
+  var ctx = ensureAudio();
+  if(!ctx) return;
+  liveOsc = ctx.createOscillator();
+  liveGain = ctx.createGain();
+  liveOsc.type = 'sine';
+  liveOsc.frequency.value = toneFreq;
+  var now = ctx.currentTime;
+  liveGain.gain.setValueAtTime(0, now);
+  liveGain.gain.linearRampToValueAtTime(0.32, now+0.008);
+  liveOsc.connect(liveGain); liveGain.connect(ctx.destination);
+  liveOsc.start(now);
+}
+function stopLiveTone(){
+  if(!liveOsc || !audioCtx) { liveOsc=null; liveGain=null; return; }
+  var now = audioCtx.currentTime;
+  try{
+    liveGain.gain.linearRampToValueAtTime(0, now+0.008);
+    liveOsc.stop(now+0.02);
+  }catch(e){}
+  liveOsc = null; liveGain = null;
+}
+
+/* ============ NAV ============ */
+function setView(v){
+  currentView = v;
+  document.querySelectorAll('.topbar .tab-btn').forEach(function(b){ b.classList.toggle('active', b.dataset.view===v); });
+  document.getElementById('view-theory').classList.toggle('active', v==='theory');
+  document.getElementById('view-trainer').classList.toggle('active', v==='trainer');
+  document.getElementById('view-ham').classList.toggle('active', v==='ham');
+  document.getElementById('view-games').classList.toggle('active', v==='games');
+  if(v==='ham'){ updateSpeedStatsUI(); updateSaveCodeDisplay(); }
+  if(v==='games'){ renderGamesLeaderboard(); }
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+/* ============ THEORY TABLE ============ */
+function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function buildRows(chars){
+  var html = '<tr>';
+  chars.forEach(function(ch){ html += '<th>'+esc(ch)+'</th>'; });
+  html += '</tr><tr>';
+  chars.forEach(function(ch){ html += '<td class="code">'+MORSE[ch]+'</td>'; });
+  html += '</tr><tr>';
+  chars.forEach(function(ch){ html += '<td><button class="play-mini" onclick="playChar(\''+ch+'\')">▶</button></td>'; });
+  html += '</tr>';
+  return html;
+}
+function renderTheoryTables(){
+  var lw = document.getElementById('table-letters-wrap');
+  var half = Math.ceil(LETTER_ROWS.length/2);
+  lw.innerHTML =
+    '<table class="help-table">'+buildRows(LETTER_ROWS.slice(0,half))+'</table>'+
+    '<div style="height:8px"></div>'+
+    '<table class="help-table">'+buildRows(LETTER_ROWS.slice(half))+'</table>';
+  document.getElementById('table-digits').innerHTML = buildRows(DIGIT_ROWS);
+  document.getElementById('table-punct').innerHTML = buildRows(PUNCT_ROWS);
+}
+
+/* ============ ROADMAP ============ */
+function levelAccuracy(n){
+  var s = levelStats[n];
+  if(!s || s.attempts===0) return 0;
+  return Math.round(100*s.correct/s.attempts);
+}
+function levelDone(n){
+  var s = levelStats[n];
+  return !!(s && s.attempts>=15 && (s.correct/s.attempts)>=0.8);
+}
+function renderRoadmap(prefix){
+  var fill = document.getElementById(prefix+'-fill');
+  var nodes = document.getElementById(prefix+'-nodes');
+  var labels = document.getElementById(prefix+'-labels');
+  var pct = ((practiceLevel-1)/(LEVELS.length-1))*100;
+  fill.style.width = pct+'%';
+  nodes.innerHTML = '';
+  labels.innerHTML = '';
+  LEVELS.forEach(function(lv, idx){
+    var n = idx+1;
+    var cls = 'rnode';
+    if(levelDone(n)) cls += ' done';
+    else if(n===practiceLevel) cls += ' current';
+    if(n>unlockedLevel) cls += ' locked';
+    var node = document.createElement('div');
+    node.className = cls;
+    node.textContent = n;
+    node.title = lv.label + (levelDone(n) ? ' · пройден' : (n<=unlockedLevel ? ' · точность '+levelAccuracy(n)+'%' : ' · закрыт'));
+    if(n<=unlockedLevel){ node.onclick = (function(nn){ return function(){ selectLevel(nn); }; })(n); }
+    nodes.appendChild(node);
+    var lab = document.createElement('span');
+    lab.textContent = lv.label;
+    labels.appendChild(lab);
+  });
+}
+function selectLevel(n){
+  if(n>unlockedLevel) return;
+  practiceLevel = n;
+  reviewMode = false;
+  renderRoadmap('roadmap');
+  renderRoadmap('theory-roadmap');
+  saveProgress();
+  nextQuestion();
+}
+function maybeUnlockNext(){
+  if(practiceLevel===unlockedLevel && levelDone(practiceLevel) && unlockedLevel<LEVELS.length){
+    unlockedLevel++;
+    practiceLevel = unlockedLevel;
+    showCelebrate('Уровень '+unlockedLevel+' открыт: '+LEVELS[unlockedLevel-1].label+' 🎉');
+    renderRoadmap('roadmap');
+    renderRoadmap('theory-roadmap');
+    saveProgress();
+  }
+}
+function showCelebrate(msg){
+  var t = document.getElementById('celebrate-toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(function(){ t.classList.remove('show'); }, 2600);
+}
+
+/* ============ MODE / SETTINGS ============ */
+function setMode(m){
+  currentMode = m;
+  document.querySelectorAll('.mode-switch .tab-btn').forEach(function(b){ b.classList.toggle('active', b.dataset.mode===m); });
+  document.getElementById('receive-area').style.display = (m==='receive') ? '' : 'none';
+  document.getElementById('send-area').style.display = (m==='send') ? '' : 'none';
+  document.getElementById('key-area').style.display = (m==='key') ? '' : 'none';
+  nextQuestion();
+}
+function onWpmChange(v){ wpm = parseInt(v,10); document.getElementById('wpm-out').textContent = wpm; saveSettings(); }
+function onFreqChange(v){ toneFreq = parseInt(v,10); document.getElementById('freq-out').textContent = toneFreq; saveSettings(); }
+function toggleSound(){
+  soundOn = !soundOn;
+  document.getElementById('sound-toggle-btn').textContent = soundOn ? '🔊 Звук' : '🔇 Звук выкл';
+  saveSettings();
+}
+function toggleTimerMode(){
+  timerMode = document.getElementById('timer-toggle').checked;
+  if(timerMode){ startTimer(); } else { stopTimer(); document.getElementById('timer-out').textContent=''; }
+}
+function startTimer(){
+  stopTimer();
+  timerLeft = 60;
+  document.getElementById('timer-out').textContent = timerLeft+'с';
+  timerHandle = setInterval(function(){
+    timerLeft--;
+    document.getElementById('timer-out').textContent = timerLeft+'с';
+    if(timerLeft<=0){
+      stopTimer();
+      document.getElementById('timer-toggle').checked = false;
+      timerMode = false;
+      showCelebrate('Время вышло! Решено: '+sessionSolved+', точность '+accPct()+'%');
+    }
+  }, 1000);
+}
+function stopTimer(){ clearInterval(timerHandle); timerHandle = null; }
+
+/* ============ QUESTION GENERATION ============ */
+function pool(){
+  var lvl = LEVELS[practiceLevel-1];
+  if(lvl.type==='words') return WORDS_LIST.slice();
+  if(lvl.type==='phrases') return PHRASES_LIST.slice();
+  var arr = [];
+  for(var i=0;i<practiceLevel;i++){ if(LEVELS[i].type==='chars') arr = arr.concat(LEVELS[i].chars); }
+  return arr;
+}
+function activeCharPool(){
+  if(reviewMode) return mistakes.length ? mistakes.slice() : pool();
+  return pool();
+}
+function pickTarget(){
+  var p = activeCharPool();
+  return p[Math.floor(Math.random()*p.length)];
+}
+function normText(s){ return String(s||'').toUpperCase().trim().replace(/\s+/g,' '); }
+function normCode(s){ return String(s||'').trim().replace(/\s+/g,' '); }
+function buildCodeString(str){
+  var words = String(str).trim().split(/\s+/);
+  return words.map(function(w){
+    return w.split('').map(function(ch){ return morseFor(ch); }).join(' ');
+  }).join(' / ');
+}
+
+function nextQuestion(){
+  answered = false;
+  resetKeyState();
+  document.getElementById('feedback').textContent = '';
+  document.getElementById('feedback').className = 'feedback';
+  var lvl = LEVELS[practiceLevel-1];
+  var levelLabel = reviewMode ? 'повтор ошибок' : ('уровень '+practiceLevel+' · '+lvl.label);
+  var modeLabel = currentMode==='receive' ? 'приём на слух' : (currentMode==='send' ? 'передача (2 кнопки)' : 'передача (ключ)');
+  document.getElementById('problem-hint').textContent = modeLabel+' · '+levelLabel;
+  curTarget = pickTarget();
+  curCode = buildCodeString(curTarget);
+
+  if(currentMode==='receive'){
+    renderReceiveUI();
+    setTimeout(replayCurrent, 300);
+  } else if(currentMode==='send'){
+    sendInput = '';
+    document.getElementById('send-target').textContent = curTarget;
+    updateSendDisplay();
+    document.getElementById('send-gap-buttons').style.display = (curTarget.length>1) ? '' : 'none';
+  } else {
+    document.getElementById('key-target').textContent = curTarget;
+    updateKeyDisplay();
+  }
+}
+function replayCurrent(){ if(curTarget) playText(curTarget); }
+function replaySendTarget(){ if(curTarget) playText(curTarget); }
+
+/* ---- receive mode ---- */
+function renderReceiveUI(){
+  var isSingle = curTarget.length===1;
+  document.getElementById('choice-row').style.display = isSingle ? '' : 'none';
+  document.getElementById('word-answer-row').style.display = isSingle ? 'none' : '';
+  if(isSingle){
+    renderChoices();
+  } else {
+    var inp = document.getElementById('word-input');
+    inp.value = '';
+    setTimeout(function(){ inp.focus(); }, 350);
+  }
+}
+function renderChoices(){
+  var row = document.getElementById('choice-row');
+  row.innerHTML = '';
+  var p = pool().slice();
+  var opts = [curTarget];
+  while(opts.length < Math.min(6, p.length)){
+    var c = p[Math.floor(Math.random()*p.length)];
+    if(opts.indexOf(c)===-1) opts.push(c);
+  }
+  opts.sort(function(){ return Math.random()-0.5; });
+  opts.forEach(function(ch){
+    var b = document.createElement('button');
+    b.className = 'choice-btn';
+    b.textContent = ch;
+    b.onclick = function(){ answerReceive(ch, b); };
+    row.appendChild(b);
+  });
+}
+function answerReceive(chosen, btnEl){
+  document.querySelectorAll('#choice-row .choice-btn').forEach(function(b){ b.disabled = true; });
+  var ok = normText(chosen) === normText(curTarget);
+  if(ok){ btnEl.classList.add('correct'); } else {
+    btnEl.classList.add('wrong');
+    document.querySelectorAll('#choice-row .choice-btn').forEach(function(b){ if(b.textContent===curTarget) b.classList.add('correct'); });
+  }
+  checkAnswer(chosen, 'receive', {silent:true});
+}
+function submitWordAnswer(){
+  var val = document.getElementById('word-input').value;
+  if(!val) return;
+  checkAnswer(val, 'receive');
+}
+document.addEventListener('keydown', function(e){
+  if(currentView!=='trainer' || currentMode!=='receive') return;
+  if(!curTarget || curTarget.length!==1) return;
+  var key = e.key.toUpperCase();
+  var btn = null;
+  document.querySelectorAll('#choice-row .choice-btn').forEach(function(b){ if(b.textContent===key) btn = b; });
+  if(btn && !btn.disabled) answerReceive(key, btn);
+});
+
+/* ---- send mode (2 buttons) ---- */
+function formatCodeDisplay(str){
+  return str.replace(/([.\-])(?=[.\-])/g, '$1 ');
+}
+function sendSymbol(sym){
+  if(!curTarget) return;
+  sendInput += sym;
+  updateSendDisplay();
+  var d = ditMs();
+  beep(sym==='.' ? d : d*3);
+  var btn = document.getElementById(sym==='.' ? 'dit-btn' : 'dah-btn');
+  btn.classList.add('pressed');
+  setTimeout(function(){ btn.classList.remove('pressed'); }, 150);
+}
+function sendLetterGap(){ if(!curTarget) return; sendInput += ' '; updateSendDisplay(); }
+function sendWordGap(){ if(!curTarget) return; sendInput += ' / '; updateSendDisplay(); }
+function updateSendDisplay(){
+  var el = document.getElementById('send-display');
+  el.innerHTML = sendInput.length ? esc(formatCodeDisplay(sendInput)) : '<span class="empty">жди ввода…</span>';
+}
+function clearSend(){ sendInput=''; updateSendDisplay(); }
+function submitSend(){
+  if(!curTarget) return;
+  checkAnswer(sendInput, 'send');
+}
+document.addEventListener('keydown', function(e){
+  if(currentView!=='trainer' || currentMode!=='send') return;
+  if(e.key==='.'){ sendSymbol('.'); e.preventDefault(); }
+  else if(e.key==='-'){ sendSymbol('-'); e.preventDefault(); }
+  else if(e.key===' '){
+    if(curTarget && curTarget.length>1){ sendLetterGap(); } else { sendSymbol('-'); }
+    e.preventDefault();
+  }
+  else if(e.key==='/'){ sendWordGap(); e.preventDefault(); }
+  else if(e.key==='Enter'){ submitSend(); e.preventDefault(); }
+  else if(e.key==='Backspace'){ clearSend(); e.preventDefault(); }
+});
+
+/* ---- key mode (single telegraph key) ---- */
+function updateKeyDisplay(){
+  var el = document.getElementById('key-decoded');
+  var buf = symbolBuffer ? formatCodeDisplay(symbolBuffer) : '';
+  if(!decodedText && !buf){ el.innerHTML = '<span class="empty">жди ввода…</span>'; return; }
+  el.innerHTML = esc(decodedText) + (buf ? ' <span style="color:var(--text-3);font-size:20px">['+esc(buf)+']</span>' : '');
+}
+function resetKeyState(){
+  clearTimeout(gapTimer); clearTimeout(wordGapTimer);
+  gapTimer = null; wordGapTimer = null;
+  symbolBuffer = ''; decodedText = ''; keyPressStart = null;
+  stopLiveTone();
+  var btn = document.getElementById('tele-key-btn');
+  if(btn) btn.classList.remove('pressed');
+  updateKeyDisplay();
+}
+function clearKey(){ resetKeyState(); }
+function teleDown(e){
+  if(e){ e.preventDefault(); }
+  if(currentView!=='trainer' || currentMode!=='key') return;
+  if(keyPressStart!==null) return;
+  if(answered) return;
+  keyPressStart = performance.now();
+  clearTimeout(gapTimer); clearTimeout(wordGapTimer);
+  startLiveTone();
+  var btn = document.getElementById('tele-key-btn');
+  if(btn) btn.classList.add('pressed');
+}
+function teleUp(e){
+  if(e){ e.preventDefault(); }
+  if(keyPressStart===null) return;
+  var dur = performance.now()-keyPressStart;
+  keyPressStart = null;
+  stopLiveTone();
+  var btn = document.getElementById('tele-key-btn');
+  if(btn) btn.classList.remove('pressed');
+  if(answered) return;
+  var d = ditMs();
+  var isDit = dur < d*2;
+  symbolBuffer += (isDit ? '.' : '-');
+  updateKeyDisplay();
+  logKeySpeed(dur, isDit);
+  scheduleKeyGaps();
+}
+function logKeySpeed(dur, isDit){
+  var wpmEq = isDit ? (1200/dur) : (1200/(dur/3));
+  if(!isFinite(wpmEq) || wpmEq<=0 || wpmEq>200) return;
+  keySpeedLog.push({dur:dur, isDit:isDit, wpm:wpmEq, t:Date.now()});
+  if(keySpeedLog.length>200) keySpeedLog.shift();
+  updateSpeedStatsUI();
+  saveKeyLog();
+}
+function scheduleKeyGaps(){
+  clearTimeout(gapTimer); clearTimeout(wordGapTimer);
+  var d = ditMs();
+  gapTimer = setTimeout(finalizeKeyLetter, d*3);
+}
+function finalizeKeyLetter(){
+  if(!symbolBuffer) return;
+  var letter = REV_MORSE[symbolBuffer] || '?';
+  symbolBuffer = '';
+  if(curTarget && curTarget.length===1){
+    decodedText = letter;
+    updateKeyDisplay();
+    gradeKeyChar();
+    return;
+  }
+  decodedText += letter;
+  updateKeyDisplay();
+  var d = ditMs();
+  wordGapTimer = setTimeout(function(){
+    decodedText += ' ';
+    updateKeyDisplay();
+  }, d*4);
+}
+function gradeKeyChar(){
+  if(answered) return;
+  checkAnswer(decodedText, 'receive');
+}
+function submitKey(){
+  if(answered) return;
+  clearTimeout(gapTimer); clearTimeout(wordGapTimer);
+  if(symbolBuffer){
+    var letter = REV_MORSE[symbolBuffer] || '?';
+    decodedText += letter;
+    symbolBuffer = '';
+  }
+  updateKeyDisplay();
+  checkAnswer(decodedText, 'receive');
+}
+document.addEventListener('keydown', function(e){
+  if(currentView==='trainer' && currentMode==='key' && e.code==='Space' && !e.repeat){ teleDown(e); e.preventDefault(); }
+});
+document.addEventListener('keyup', function(e){
+  if(currentView==='trainer' && currentMode==='key' && e.code==='Space'){ teleUp(e); e.preventDefault(); }
+});
+
+/* ============ ANSWER CHECKING ============ */
+function checkAnswer(provided, kind, opts){
+  if(answered) return false;
+  answered = true;
+  opts = opts || {};
+  var ok;
+  if(kind==='send'){ ok = normCode(provided) === normCode(curCode); }
+  else { ok = normText(provided) === normText(curTarget); }
+  if(!opts.silent){
+    var fb = document.getElementById('feedback');
+    if(ok){
+      fb.textContent = 'Верно! ' + curTarget + (kind==='send' ? (' = '+curCode) : '');
+      fb.className = 'feedback ok';
+    } else {
+      fb.textContent = 'Неверно. Правильно: ' + curTarget + (kind==='send' ? (' ('+curCode+')') : '');
+      fb.className = 'feedback err';
+    }
+  }
+  registerAnswer(ok, curTarget);
+  setTimeout(nextQuestion, ok ? 700 : 1600);
+  return ok;
+}
+
+/* ============ STATS ============ */
+function registerAnswer(ok, target){
+  sessionSolved++;
+  if(ok) sessionCorrect++;
+  streak = ok ? streak+1 : 0;
+  if(streak>bestStreak) bestStreak = streak;
+
+  if(!levelStats[practiceLevel]) levelStats[practiceLevel] = {attempts:0, correct:0};
+  levelStats[practiceLevel].attempts++;
+  if(ok) levelStats[practiceLevel].correct++;
+
+  if(!ok){
+    if(mistakes.indexOf(target)===-1) mistakes.push(target);
+  } else if(reviewMode){
+    var idx = mistakes.indexOf(target);
+    if(idx>-1) mistakes.splice(idx,1);
+  }
+  updateStatsUI();
+  maybeUnlockNext();
+  saveProgress();
+}
+function accPct(){ return sessionSolved ? Math.round(100*sessionCorrect/sessionSolved) : 0; }
+function updateStatsUI(){
+  document.getElementById('st-solved').textContent = sessionSolved;
+  document.getElementById('st-acc').textContent = accPct()+'%';
+  document.getElementById('st-streak').textContent = streak;
+  document.getElementById('st-best').textContent = bestStreak;
+  document.getElementById('mistake-count').textContent = mistakes.length;
+}
+function startReview(){
+  if(!mistakes.length){ showCelebrate('Пока нет ошибок для повтора 👍'); return; }
+  reviewMode = true;
+  nextQuestion();
+}
+
+/* ============ Q-CODES TABLE ============ */
+var QCODES = [
+  ['CQ','всем, вызов в эфир'],['DE','от (мой позывной)'],['RST','рапорт: разборч.-сила-тон'],
+  ['599','отличный сигнал (пример RST)'],['TNX','спасибо'],['PSE','пожалуйста'],
+  ['HW?','как слышите?'],['GA','добрый день'],['GM','доброе утро'],
+  ['GE','добрый вечер'],['OM','старина (к мужчине)'],['YL','девушка/женщина'],
+  ['WX','погода'],['NAME','имя'],['QTH','местоположение'],
+  ['QRZ','кто вызывает?'],['QRM','помехи от станций'],['QRN','атмосферные помехи'],
+  ['QSB','замирание сигнала'],['QRP','малая мощность'],['QSY','сменить частоту'],
+  ['K','приём, продолжайте'],['KN','приём только для указанной станции'],['AR','конец передачи'],
+  ['SK','конец связи'],['BK','разрыв/перебивание'],['73','наилучшие пожелания'],['88','целую (к YL)']
+];
+function renderQcodes(){
+  var wrap = document.getElementById('table-qcodes-wrap');
+  if(!wrap) return;
+  var html = '';
+  for(var i=0;i<QCODES.length;i+=6){
+    var chunk = QCODES.slice(i,i+6);
+    html += '<table class="help-table"><tr>';
+    chunk.forEach(function(c){ html += '<th>'+esc(c[0])+'</th>'; });
+    html += '</tr><tr>';
+    chunk.forEach(function(c){ html += '<td style="font-size:11px;line-height:1.3">'+esc(c[1])+'</td>'; });
+    html += '</tr><tr>';
+    chunk.forEach(function(c){ html += '<td><button class="play-mini" onclick="playText(\''+c[0].replace(/'/g,"")+'\')">▶</button></td>'; });
+    html += '</tr></table><div style="height:8px"></div>';
+  }
+  wrap.innerHTML = html;
+}
+
+/* ============ CALLSIGN GENERATOR + QUIZ ============ */
+var CALL_PREFIXES = ['R','U','K','W','N','G','M','F','I','DL','SM','LA','OH','ON','EA','JA','VE','VK','ZL','PY','LU','SP','OK','HB','YO'];
+var LETTERS_AZ = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+function genCallsignRaw(){
+  var pre = CALL_PREFIXES[Math.floor(Math.random()*CALL_PREFIXES.length)];
+  var digit = Math.floor(Math.random()*10);
+  var sufLen = 2+Math.floor(Math.random()*2);
+  var suf = '';
+  for(var i=0;i<sufLen;i++) suf += LETTERS_AZ[Math.floor(Math.random()*LETTERS_AZ.length)];
+  return pre+digit+suf;
+}
+function genCallsign(){
+  curCallsign = genCallsignRaw();
+  var box = document.getElementById('callgen-box');
+  if(box) box.textContent = curCallsign;
+  return curCallsign;
+}
+function playCallsign(){ if(!curCallsign) genCallsign(); playTextWithNoise(curCallsign); }
+
+var callquizTarget = null;
+function newCallsignQuiz(){
+  callquizTarget = genCallsignRaw();
+  document.getElementById('callquiz-mask').textContent = '•'.repeat(callquizTarget.length);
+  document.getElementById('callquiz-input').value = '';
+  document.getElementById('callquiz-feedback').textContent = '';
+  document.getElementById('callquiz-feedback').className = 'feedback';
+  setTimeout(replayCallsignQuiz, 300);
+}
+function replayCallsignQuiz(){ if(callquizTarget) playTextWithNoise(callquizTarget); }
+function checkCallsignQuiz(){
+  if(!callquizTarget) return;
+  var val = normText(document.getElementById('callquiz-input').value);
+  var ok = val === normText(callquizTarget);
+  var fb = document.getElementById('callquiz-feedback');
+  document.getElementById('callquiz-mask').textContent = callquizTarget;
+  if(ok){ fb.textContent='Верно! '+callquizTarget; fb.className='feedback ok'; }
+  else { fb.textContent='Неверно. Было: '+callquizTarget; fb.className='feedback err'; }
+}
+
+/* ============ QSO TRAINER (learning mode, transcript visible) ============ */
+var QSO_NAMES = ['IVAN','PETR','ALEX','OLEG','ANNA','MAX','JOHN','MIKE','PAUL','KATE'];
+var QSO_QTHS = ['MOSCOW','KYIV','BERLIN','PRAGUE','MINSK','ROME','MADRID','OSLO','SOFIA','VIENNA'];
+var QSO_SCRIPT = [
+  {who:'them', text:function(s){ return 'CQ CQ CQ DE '+s.partnerCall+' '+s.partnerCall+' K'; }},
+  {who:'me', label:'Ответить своим позывным', options:['DE MYCALL MYCALL K','CQ CQ DE MYCALL K','QRZ'], correct:0},
+  {who:'them', text:function(s){ return s.partnerCall+' DE MYCALL UR RST '+s.rst+' '+s.rst+' NAME '+s.name+' '+s.name+' QTH '+s.qth+' '+s.qth+' K'; }},
+  {who:'me', label:'Дать свой рапорт, имя и QTH', options:['RST 599 599 NAME OP QTH HERE K','TNX 73 SK','QRZ QRZ'], correct:0},
+  {who:'them', text:function(){ return 'FB TNX FER QSO 73 GL SK'; }},
+  {who:'me', label:'Попрощаться и закончить связь', options:['73 SK','CQ CQ CQ','QRM QRM'], correct:0}
+];
+var qsoState = null;
+function startQso(){
+  qsoState = {
+    partnerCall: genCallsignRaw(),
+    name: QSO_NAMES[Math.floor(Math.random()*QSO_NAMES.length)],
+    qth: QSO_QTHS[Math.floor(Math.random()*QSO_QTHS.length)],
+    rst: '5'+(7+Math.floor(Math.random()*3))+'9',
+    step: 0
+  };
+  document.getElementById('qso-partner').textContent = qsoState.partnerCall;
+  document.getElementById('qso-log').innerHTML = '';
+  advanceQso();
+}
+function appendQsoLog(cls, who, text){
+  var log = document.getElementById('qso-log');
+  var div = document.createElement('div');
+  div.className = 'qso-line '+cls;
+  div.innerHTML = (who ? '<span class="who">'+esc(who)+':</span> ' : '') + esc(text);
+  log.appendChild(div);
+  log.scrollTop = log.scrollHeight;
+}
+function advanceQso(){
+  if(!qsoState) return;
+  document.getElementById('qso-step').textContent = Math.min(qsoState.step,QSO_SCRIPT.length)+'/'+QSO_SCRIPT.length;
+  if(qsoState.step>=QSO_SCRIPT.length){
+    appendQsoLog('sys','','QSO завершено. 73!');
+    document.getElementById('qso-macros').innerHTML='';
+    return;
+  }
+  var step = QSO_SCRIPT[qsoState.step];
+  if(step.who==='them'){
+    var text = step.text(qsoState);
+    appendQsoLog('theirs', qsoState.partnerCall, text);
+    playTextWithNoise(text);
+    document.getElementById('qso-macros').innerHTML = '<button class="macro-btn" onclick="qsoNextAfterThem()">Дальше →</button>';
+  } else {
+    renderQsoMacros(step);
+  }
+}
+function qsoNextAfterThem(){ qsoState.step++; advanceQso(); }
+function renderQsoMacros(step){
+  var row = document.getElementById('qso-macros');
+  row.innerHTML = '<div style="width:100%;color:var(--text-3);font-size:12px;margin-bottom:6px">'+esc(step.label)+'</div>';
+  step.options.forEach(function(opt, i){
+    var b = document.createElement('button');
+    b.className = 'macro-btn';
+    b.textContent = opt;
+    b.onclick = function(){ qsoChoose(step, i, opt); };
+    row.appendChild(b);
+  });
+}
+function qsoChoose(step, i, opt){
+  document.querySelectorAll('#qso-macros .macro-btn').forEach(function(b){ b.disabled = true; });
+  appendQsoLog('mine', 'MYCALL', opt);
+  playTextWithNoise(opt.replace(/[^A-Z0-9 ]/g,''));
+  if(i!==step.correct){ showCelebrate('В реальном QSO обычно отвечают иначе — продолжаем'); }
+  qsoState.step++;
+  setTimeout(advanceQso, 900);
+}
+function replayQsoLine(){
+  if(!qsoState) return;
+  var idx = Math.max(0, Math.min(qsoState.step, QSO_SCRIPT.length-1));
+  var step = QSO_SCRIPT[idx];
+  if(step.who==='them') playTextWithNoise(step.text(qsoState));
+}
+
+/* ============ SPEED ANALYSIS ============ */
+function updateSpeedStatsUI(){
+  var elAvg = document.getElementById('speed-avg');
+  if(!elAvg) return;
+  var elCons = document.getElementById('speed-consistency');
+  var elCount = document.getElementById('speed-count');
+  var elHist = document.getElementById('speed-hist');
+  elCount.textContent = keySpeedLog.length;
+  if(!keySpeedLog.length){ elAvg.textContent='— зн/мин'; elCons.textContent='—%'; elHist.innerHTML=''; return; }
+  var recent = keySpeedLog.slice(-40);
+  var sum=0; recent.forEach(function(e){ sum+=e.wpm; });
+  var avg = sum/recent.length;
+  var variance=0; recent.forEach(function(e){ variance += Math.pow(e.wpm-avg,2); });
+  var stddev = Math.sqrt(variance/recent.length);
+  var consistency = avg>0 ? Math.max(0, Math.round(100 - (stddev/avg)*100)) : 0;
+  elAvg.textContent = Math.round(avg)+' зн/мин';
+  elCons.textContent = consistency+'%';
+  elHist.innerHTML='';
+  var last20 = keySpeedLog.slice(-20);
+  var maxWpm = Math.max.apply(null, last20.map(function(e){return e.wpm;}).concat([5]));
+  last20.forEach(function(e){
+    var bar = document.createElement('div');
+    bar.className='speed-bar';
+    bar.style.height = Math.max(4, Math.round((e.wpm/maxWpm)*60))+'px';
+    bar.title = Math.round(e.wpm)+' зн/мин';
+    elHist.appendChild(bar);
+  });
+}
+
+/* ============ EXPORT ============ */
+function downloadBlob(content, filename, mime){
+  var blob = new Blob([content], {type:mime});
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  a.href = url; a.download = filename;
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  setTimeout(function(){ URL.revokeObjectURL(url); }, 2000);
+}
+function exportStats(){
+  var data = {
+    exportedAt: new Date().toISOString(),
+    progress: {practiceLevel:practiceLevel, unlockedLevel:unlockedLevel, levelStats:levelStats, sessionSolved:sessionSolved, sessionCorrect:sessionCorrect, streak:streak, bestStreak:bestStreak, mistakes:mistakes},
+    settings: {wpm:wpm, toneFreq:toneFreq, soundOn:soundOn, noiseLevel:noiseLevel},
+    keySpeedLog: keySpeedLog,
+    gameScores: gameScores
+  };
+  downloadBlob(JSON.stringify(data,null,2), 'morse-stats.json', 'application/json');
+}
+function exportStatsCsv(){
+  var rows = ['timestamp,duration_ms,symbol,wpm'];
+  keySpeedLog.forEach(function(e){
+    rows.push([e.t, Math.round(e.dur), e.isDit?'dit':'dah', Math.round(e.wpm)].join(','));
+  });
+  downloadBlob(rows.join('\n'), 'morse-key-log.csv', 'text/csv');
+}
+
+/* ============ GAMES: SHARED ============ */
+function openGame(id){
+  activeGame = id;
+  ['hunter','rain','qso'].forEach(function(g){
+    document.getElementById('picker-'+g).classList.toggle('active', g===id);
+    document.getElementById('panel-'+g).classList.toggle('active', g===id);
+  });
+  var panel = document.getElementById('panel-'+id);
+  setTimeout(function(){ window.scrollTo({top:panel.offsetTop-70, behavior:'smooth'}); }, 60);
+}
+function saveGameScore(game, score){
+  if(score > (gameScores[game]||0)) gameScores[game] = score;
+  renderGamesLeaderboard();
+  saveGames();
+}
+function renderGamesLeaderboard(){
+  var el = document.getElementById('games-leaderboard');
+  if(!el) return;
+  el.innerHTML =
+    'Охотник за позывными — лучший счёт: <b>'+(gameScores.hunter||0)+'</b><br>'+
+    'Сигнальный дождь — лучший счёт: <b>'+(gameScores.rain||0)+'</b><br>'+
+    'QSO на скорость — лучший счёт: <b>'+(gameScores.qso||0)+'</b>';
+}
+
+/* ============ GAME 1: CALLSIGN HUNTER ============ */
+var hunterRunning=false, hunterScore=0, hunterStreak=0, hunterLives=3, hunterTarget=null, hunterTimer=null, hunterTimeLeft=0, hunterRoundMs=9000;
+function startHunter(){
+  hunterRunning = true;
+  hunterScore=0; hunterStreak=0; hunterLives=3; hunterRoundMs=9000;
+  document.getElementById('hunter-score').textContent=0;
+  document.getElementById('hunter-streak').textContent=0;
+  updateHunterLivesUI();
+  document.getElementById('hunter-feedback').textContent='';
+  nextHunterRound();
+}
+function updateHunterLivesUI(){ document.getElementById('hunter-lives').textContent = '●'.repeat(Math.max(0,hunterLives)) + '○'.repeat(Math.max(0,3-hunterLives)); }
+function nextHunterRound(){
+  if(!hunterRunning) return;
+  hunterTarget = genCallsignRaw();
+  document.getElementById('hunter-mask').textContent = '•'.repeat(hunterTarget.length);
+  document.getElementById('hunter-input').value='';
+  var noiseForRound = Math.min(0.7, 0.05*hunterStreak);
+  playTextWithNoise(hunterTarget, noiseForRound);
+  clearInterval(hunterTimer);
+  hunterTimeLeft = hunterRoundMs;
+  document.getElementById('hunter-time').textContent = (hunterTimeLeft/1000).toFixed(1)+'с';
+  hunterTimer = setInterval(function(){
+    hunterTimeLeft -= 100;
+    document.getElementById('hunter-time').textContent = Math.max(0,hunterTimeLeft/1000).toFixed(1)+'с';
+    if(hunterTimeLeft<=0){ clearInterval(hunterTimer); hunterFail(); }
+  }, 100);
+}
+function replayHunter(){ if(hunterTarget) playTextWithNoise(hunterTarget, Math.min(0.7,0.05*hunterStreak)); }
+function hunterSubmit(){
+  if(!hunterRunning || !hunterTarget) return;
+  var val = normText(document.getElementById('hunter-input').value);
+  clearInterval(hunterTimer);
+  if(val === normText(hunterTarget)){
+    hunterScore += 10 + hunterStreak*2;
+    hunterStreak++;
+    hunterRoundMs = Math.max(4000, hunterRoundMs-150);
+    var fb = document.getElementById('hunter-feedback');
+    fb.textContent='Верно! '+hunterTarget; fb.className='feedback ok';
+    document.getElementById('hunter-score').textContent = hunterScore;
+    document.getElementById('hunter-streak').textContent = hunterStreak;
+    setTimeout(nextHunterRound, 500);
+  } else {
+    hunterFail();
+  }
+}
+function hunterFail(){
+  var fb = document.getElementById('hunter-feedback');
+  fb.textContent='Неверно. Было: '+hunterTarget; fb.className='feedback err';
+  hunterStreak=0;
+  document.getElementById('hunter-streak').textContent = 0;
+  hunterLives--;
+  updateHunterLivesUI();
+  if(hunterLives<=0){ endHunter(); } else { setTimeout(nextHunterRound, 900); }
+}
+function endHunter(){
+  hunterRunning=false;
+  clearInterval(hunterTimer);
+  document.getElementById('hunter-mask').textContent = 'ИГРА ОКОНЧЕНА';
+  saveGameScore('hunter', hunterScore);
+  showCelebrate('Игра окончена! Счёт: '+hunterScore);
+}
+
+/* ============ GAME 2: SIGNAL RAIN ============ */
+var rainRunning=false, rainScore=0, rainLevel=1, rainLives=3, rainLoopTimer=null, rainItems={}, rainIdSeq=0;
+function startRain(){
+  rainRunning=true; rainScore=0; rainLevel=1; rainLives=3; rainItems={};
+  document.getElementById('rain-score').textContent=0;
+  document.getElementById('rain-level').textContent=1;
+  updateRainLivesUI();
+  document.getElementById('rain-overlay').style.display='none';
+  var field = document.getElementById('rain-field');
+  Array.prototype.slice.call(field.querySelectorAll('.rain-item')).forEach(function(n){n.remove();});
+  renderRainKeypad();
+  spawnRainLoop();
+  document.addEventListener('keydown', rainKeyHandler);
+}
+function renderRainKeypad(){
+  var row = document.getElementById('rain-keypad');
+  if(!row) return;
+  row.innerHTML = '';
+  var pool = rainPool();
+  var uniq = pool.filter(function(v,i){ return pool.indexOf(v)===i; });
+  uniq.forEach(function(ch){
+    var b = document.createElement('button');
+    b.className = 'rain-key-btn';
+    b.textContent = ch;
+    b.onclick = function(){ rainPressChar(ch); };
+    row.appendChild(b);
+  });
+}
+function updateRainLivesUI(){ document.getElementById('rain-lives').textContent = '●'.repeat(Math.max(0,rainLives))+'○'.repeat(Math.max(0,3-rainLives)); }
+function spawnRainLoop(){
+  if(!rainRunning) return;
+  spawnRainItem();
+  var delay = Math.max(900, 3200 - rainLevel*250);
+  rainLoopTimer = setTimeout(spawnRainLoop, delay);
+}
+function rainPool(){
+  var arr=[];
+  var upTo = Math.min(practiceLevel, 10);
+  for(var i=0;i<upTo;i++){ if(LEVELS[i].type==='chars') arr=arr.concat(LEVELS[i].chars); }
+  if(!arr.length) arr=['E','T','A','I','N','M'];
+  return arr;
+}
+function spawnRainItem(){
+  var field = document.getElementById('rain-field');
+  if(!field) return;
+  var pool = rainPool();
+  var ch = pool[Math.floor(Math.random()*pool.length)];
+  var id = 'ri'+(rainIdSeq++);
+  var el = document.createElement('div');
+  el.className='rain-item';
+  el.id=id;
+  el.textContent=ch;
+  el.style.left = (8+Math.random()*80)+'%';
+  el.style.top='-40px';
+  el.addEventListener('pointerdown', function(ev){ ev.preventDefault(); rainItemHit(id); });
+  field.appendChild(el);
+  var fallMs = Math.max(3200, 7500 - rainLevel*350);
+  el.style.transitionDuration = fallMs+'ms';
+  requestAnimationFrame(function(){ requestAnimationFrame(function(){ el.style.top = (field.clientHeight-42)+'px'; }); });
+  var noiseForItem = Math.min(0.6, 0.04*rainLevel);
+  playTextWithNoise(ch, noiseForItem);
+  var to = setTimeout(function(){ rainItemMissed(id); }, fallMs);
+  rainItems[id] = {ch:ch, timeout:to, el:el};
+}
+function rainPressChar(ch){
+  if(!rainRunning) return;
+  var bestId = null, bestBottom = -1;
+  for(var id in rainItems){
+    if(rainItems[id].ch===ch){
+      var top = parseFloat(rainItems[id].el.style.top)||0;
+      if(top>bestBottom){ bestBottom = top; bestId = id; }
+    }
+  }
+  if(bestId) rainItemHit(bestId);
+}
+function rainKeyHandler(e){
+  if(!rainRunning || currentView!=='games' || activeGame!=='rain') return;
+  rainPressChar(e.key.toUpperCase());
+}
+function rainItemHit(id){
+  var it = rainItems[id];
+  if(!it) return;
+  clearTimeout(it.timeout);
+  it.el.classList.add('dying');
+  setTimeout(function(){ if(it.el.parentNode) it.el.parentNode.removeChild(it.el); }, 200);
+  delete rainItems[id];
+  rainScore += 5+rainLevel;
+  document.getElementById('rain-score').textContent = rainScore;
+  if(rainScore > rainLevel*60){ rainLevel++; document.getElementById('rain-level').textContent = rainLevel; }
+}
+function rainItemMissed(id){
+  var it = rainItems[id];
+  if(!it) return;
+  it.el.classList.add('missed');
+  setTimeout(function(){ if(it.el.parentNode) it.el.parentNode.removeChild(it.el); }, 400);
+  delete rainItems[id];
+  rainLives--;
+  updateRainLivesUI();
+  if(rainLives<=0) endRain();
+}
+function endRain(){
+  rainRunning=false;
+  clearTimeout(rainLoopTimer);
+  document.removeEventListener('keydown', rainKeyHandler);
+  for(var id in rainItems){ clearTimeout(rainItems[id].timeout); }
+  var field = document.getElementById('rain-field');
+  Array.prototype.slice.call(field.querySelectorAll('.rain-item')).forEach(function(n){n.remove();});
+  rainItems={};
+  var ov = document.getElementById('rain-overlay');
+  ov.style.display='flex';
+  ov.innerHTML = '<h4>Игра окончена</h4><p style="color:var(--text-2);font-size:13px">Счёт: '+rainScore+'</p><button class="btn primary" onclick="startRain()">▶ Ещё раз</button>';
+  saveGameScore('rain', rainScore);
+  showCelebrate('Игра окончена! Счёт: '+rainScore);
+}
+
+/* ============ GAME 3: QSO SPEED ============ */
+var qsogRunning=false, qsogScore=0, qsogRound=0, qsogTimer=null, qsogTimeLeft=0, qsogCurrentAnswer=null;
+var QSOG_ROUNDS = 5;
+function startQsoGame(){
+  qsogRunning=true; qsogScore=0; qsogRound=0;
+  document.getElementById('qsog-score').textContent=0;
+  document.getElementById('qsog-log').innerHTML='';
+  document.getElementById('qsog-feedback').textContent='';
+  nextQsogRound();
+}
+function nextQsogRound(){
+  if(!qsogRunning) return;
+  qsogRound++;
+  document.getElementById('qsog-round').textContent = Math.min(qsogRound,QSOG_ROUNDS)+'/'+QSOG_ROUNDS;
+  if(qsogRound>QSOG_ROUNDS){ endQsoGame(); return; }
+  var kinds = ['RST','NAME','QTH'];
+  var kind = kinds[Math.floor(Math.random()*kinds.length)];
+  var value, promptText;
+  if(kind==='RST'){ value='5'+(5+Math.floor(Math.random()*4))+(5+Math.floor(Math.random()*4)); promptText='Партнёр передаёт RST'; }
+  else if(kind==='NAME'){ value=QSO_NAMES[Math.floor(Math.random()*QSO_NAMES.length)]; promptText='Партнёр передаёт имя'; }
+  else { value=QSO_QTHS[Math.floor(Math.random()*QSO_QTHS.length)]; promptText='Партнёр передаёт QTH'; }
+  qsogCurrentAnswer = value;
+  appendQsogLog('theirs','CALL', kind+'?');
+  var noiseForRound = Math.min(0.65, 0.06*qsogRound);
+  playTextWithNoise(value, noiseForRound);
+  renderQsogInput(promptText);
+  clearInterval(qsogTimer);
+  qsogTimeLeft = 8000;
+  document.getElementById('qsog-time').textContent = (qsogTimeLeft/1000).toFixed(1)+'с';
+  qsogTimer = setInterval(function(){
+    qsogTimeLeft-=100;
+    document.getElementById('qsog-time').textContent = Math.max(0,qsogTimeLeft/1000).toFixed(1)+'с';
+    if(qsogTimeLeft<=0){ clearInterval(qsogTimer); qsogSubmit(''); }
+  },100);
+}
+function renderQsogInput(promptText){
+  var row = document.getElementById('qsog-macros');
+  row.innerHTML = '';
+  var label = document.createElement('div');
+  label.style.cssText='width:100%;color:var(--text-3);font-size:12px;margin-bottom:6px';
+  label.textContent = promptText+' — что услышал?';
+  row.appendChild(label);
+  var input = document.createElement('input');
+  input.type='text'; input.className='word-input'; input.id='qsog-input';
+  input.placeholder='ответ'; input.autocomplete='off';
+  input.onkeydown = function(e){ if(e.key==='Enter'){ qsogSubmit(input.value); } };
+  row.appendChild(input);
+  var btn = document.createElement('button');
+  btn.className='btn primary small'; btn.style.marginLeft='8px';
+  btn.textContent='Ответить';
+  btn.onclick = function(){ qsogSubmit(input.value); };
+  row.appendChild(btn);
+  setTimeout(function(){ input.focus(); }, 200);
+}
+function qsogSubmit(val){
+  if(!qsogRunning) return;
+  clearInterval(qsogTimer);
+  var ok = normText(val) === normText(qsogCurrentAnswer);
+  var fb = document.getElementById('qsog-feedback');
+  appendQsogLog('mine','Я', val || '(нет ответа)');
+  if(ok){
+    qsogScore += 20;
+    fb.textContent='Верно: '+qsogCurrentAnswer; fb.className='feedback ok';
+  } else {
+    fb.textContent='Неверно. Было: '+qsogCurrentAnswer; fb.className='feedback err';
+  }
+  document.getElementById('qsog-score').textContent = qsogScore;
+  document.getElementById('qsog-macros').innerHTML='';
+  setTimeout(nextQsogRound, 1100);
+}
+function replayQsoGameLine(){ if(qsogCurrentAnswer) playTextWithNoise(qsogCurrentAnswer, Math.min(0.65,0.06*qsogRound)); }
+function appendQsogLog(cls, who, text){
+  var log = document.getElementById('qsog-log');
+  var div = document.createElement('div');
+  div.className='qso-line '+cls;
+  div.innerHTML = (who ? '<span class="who">'+esc(who)+':</span> ' : '') + esc(text);
+  log.appendChild(div);
+  log.scrollTop = log.scrollHeight;
+}
+function endQsoGame(){
+  qsogRunning=false;
+  clearInterval(qsogTimer);
+  document.getElementById('qsog-macros').innerHTML='';
+  appendQsogLog('sys','','QSO завершено. Счёт: '+qsogScore);
+  saveGameScore('qso', qsogScore);
+  showCelebrate('QSO завершено! Счёт: '+qsogScore);
+}
+
+/* ============ DONATE ============ */
+function copyAddr(btn, text){
+  var orig = btn.textContent;
+  navigator.clipboard.writeText(text).then(function(){
+    btn.textContent = 'Скопировано';
+    setTimeout(function(){ btn.textContent = orig; }, 1500);
+  }).catch(function(){});
+}
+
+/* ============ PERSISTENCE (обычный localStorage — работает в любом браузере) ============ */
+function lsSet(key, obj){
+  try{ localStorage.setItem(key, JSON.stringify(obj)); }catch(e){}
+}
+function lsGet(key){
+  try{
+    var raw = localStorage.getItem(key);
+    if(raw===null) return null;
+    return JSON.parse(raw);
+  }catch(e){ return null; }
+}
+function saveProgress(){
+  lsSet('morse-progress', {
+    practiceLevel: practiceLevel, unlockedLevel: unlockedLevel, levelStats: levelStats,
+    sessionSolved: sessionSolved, sessionCorrect: sessionCorrect, streak: streak, bestStreak: bestStreak,
+    mistakes: mistakes
+  });
+}
+function saveSettings(){
+  lsSet('morse-settings', {wpm:wpm, toneFreq:toneFreq, soundOn:soundOn, noiseLevel:noiseLevel});
+}
+function saveKeyLog(){
+  lsSet('morse-speedlog', {keySpeedLog:keySpeedLog.slice(-200)});
+}
+function saveGames(){
+  lsSet('morse-games', {gameScores:gameScores});
+}
+function loadAll(){
+  var p = lsGet('morse-progress');
+  if(p){
+    practiceLevel = p.practiceLevel || 1;
+    unlockedLevel = p.unlockedLevel || 1;
+    levelStats = p.levelStats || {};
+    sessionSolved = p.sessionSolved || 0;
+    sessionCorrect = p.sessionCorrect || 0;
+    streak = p.streak || 0;
+    bestStreak = p.bestStreak || 0;
+    mistakes = p.mistakes || [];
+  }
+  var st = lsGet('morse-settings');
+  if(st){
+    wpm = st.wpm || 15;
+    toneFreq = st.toneFreq || 600;
+    soundOn = (st.soundOn !== false);
+    noiseLevel = st.noiseLevel || 0;
+  }
+  var sl = lsGet('morse-speedlog');
+  if(sl){ keySpeedLog = sl.keySpeedLog || []; }
+  var gm = lsGet('morse-games');
+  if(gm){ gameScores = gm.gameScores || {hunter:0,rain:0,qso:0}; }
+  if(practiceLevel>LEVELS.length) practiceLevel = LEVELS.length;
+  if(unlockedLevel>LEVELS.length) unlockedLevel = LEVELS.length;
+  document.getElementById('wpm-slider').value = wpm;
+  document.getElementById('wpm-out').textContent = wpm;
+  document.getElementById('freq-slider').value = toneFreq;
+  document.getElementById('freq-out').textContent = toneFreq;
+  document.getElementById('sound-toggle-btn').textContent = soundOn ? '🔊 Звук' : '🔇 Звук выкл';
+  var noiseSlider = document.getElementById('ham-noise-slider');
+  if(noiseSlider){ noiseSlider.value = Math.round(noiseLevel*100); onNoiseChangeSilent(noiseSlider.value); }
+  updateStatsUI();
+  renderRoadmap('roadmap');
+  renderRoadmap('theory-roadmap');
+  renderQcodes();
+  genCallsign();
+  updateSpeedStatsUI();
+  renderGamesLeaderboard();
+  updateSaveCodeDisplay();
+  nextQuestion();
+}
+function onNoiseChangeSilent(v){
+  noiseLevel = parseInt(v,10)/100;
+  var out = document.getElementById('ham-noise-out');
+  if(out) out.textContent = v;
+  var badge = document.getElementById('noise-badge');
+  if(badge) badge.textContent = noiseLevel===0 ? 'чистый эфир' : (noiseLevel<0.3 ? 'лёгкий QRM' : (noiseLevel<0.6 ? 'заметные помехи' : 'сильные QRN'));
+}
+
+/* ============ ЛИЧНЫЙ КОД СОХРАНЕНИЯ (16 символов, работает без сервера) ============ */
+/* Код — это сжатая в 16 символов (base62) запись твоего прогресса: открытый и
+   текущий уровень, пройденные уровни, лучшие результаты игр, скорость/шум.
+   Его можно ввести в другом браузере или на другом устройстве — прогресс
+   восстановится локально, без интернета и серверов. Ошибки в игре "Приём на слух"
+   и лог скорости ключа код не переносит — только ключевые метрики. */
+var CODE_ALPHABET = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+var CODE_LENGTH = 16;
+function base62Encode(bigNum, length){
+  var base = 62n;
+  var n = bigNum;
+  var s = '';
+  if(n === 0n) s = '0';
+  while(n > 0n){
+    var rem = n % base;
+    s = CODE_ALPHABET[Number(rem)] + s;
+    n = n / base;
+  }
+  while(s.length < length) s = '0' + s;
+  return s;
+}
+function base62Decode(str){
+  var base = 62n;
+  var n = 0n;
+  for(var i=0;i<str.length;i++){
+    var idx = CODE_ALPHABET.indexOf(str[i]);
+    if(idx<0) return null;
+    n = n*base + BigInt(idx);
+  }
+  return n;
+}
+function simpleChecksum16(v){
+  var x = v, h = 0n, mask = 0xFFFFn;
+  if(x===0n) return 0n;
+  while(x>0n){
+    h = (h ^ (x & mask)) & mask;
+    x = x >> 16n;
+    h = (h * 1000003n) & mask;
+  }
+  return h;
+}
+function pushBits(value, fieldVal, nbits){
+  var mask = (1n << BigInt(nbits)) - 1n;
+  return (value << BigInt(nbits)) | (fieldVal & mask);
+}
+function takeBits(value, nbits){
+  var mask = (1n << BigInt(nbits)) - 1n;
+  return { val: value & mask, rest: value >> BigInt(nbits) };
+}
+function packState(){
+  var doneMask = 0;
+  for(var i=1;i<=LEVELS.length;i++){ if(levelDone(i)) doneMask |= (1 << (i-1)); }
+  var wpmVal = Math.max(0, Math.min(31, Math.max(5,Math.min(30,wpm)) - 5));
+  var noiseVal = Math.max(0, Math.min(31, Math.round(Math.max(0,Math.min(80,noiseLevel*100))/5)));
+  var soundVal = soundOn ? 1 : 0;
+  var hunterVal = Math.max(0, Math.min(4095, gameScores.hunter||0));
+  var rainVal = Math.max(0, Math.min(4095, gameScores.rain||0));
+  var qsoVal = Math.max(0, Math.min(1023, gameScores.qso||0));
+  var streakVal = Math.max(0, Math.min(255, bestStreak||0));
+
+  var v = 0n;
+  v = pushBits(v, 1n, 2);                                   // version
+  v = pushBits(v, BigInt(Math.min(15,unlockedLevel)), 4);
+  v = pushBits(v, BigInt(Math.min(15,practiceLevel)), 4);
+  v = pushBits(v, BigInt(doneMask), 13);
+  v = pushBits(v, BigInt(wpmVal), 5);
+  v = pushBits(v, BigInt(noiseVal), 5);
+  v = pushBits(v, BigInt(soundVal), 1);
+  v = pushBits(v, BigInt(hunterVal), 12);
+  v = pushBits(v, BigInt(rainVal), 12);
+  v = pushBits(v, BigInt(qsoVal), 10);
+  v = pushBits(v, BigInt(streakVal), 8);
+  var chk = simpleChecksum16(v);
+  v = pushBits(v, chk, 16);
+  return v;
+}
+function unpackState(value){
+  var t = takeBits(value, 16); var chk = t.val; var rest = t.rest;
+  if(simpleChecksum16(rest) !== chk) return null;
+  var r = rest;
+  t = takeBits(r,8);  var streakVal = Number(t.val); r=t.rest;
+  t = takeBits(r,10); var qsoVal = Number(t.val); r=t.rest;
+  t = takeBits(r,12); var rainVal = Number(t.val); r=t.rest;
+  t = takeBits(r,12); var hunterVal = Number(t.val); r=t.rest;
+  t = takeBits(r,1);  var soundVal = Number(t.val); r=t.rest;
+  t = takeBits(r,5);  var noiseVal = Number(t.val); r=t.rest;
+  t = takeBits(r,5);  var wpmVal = Number(t.val); r=t.rest;
+  t = takeBits(r,13); var doneMask = Number(t.val); r=t.rest;
+  t = takeBits(r,4);  var practiceLevelVal = Number(t.val); r=t.rest;
+  t = takeBits(r,4);  var unlockedLevelVal = Number(t.val); r=t.rest;
+  t = takeBits(r,2);  var version = Number(t.val); r=t.rest;
+  return {
+    version:version, unlockedLevel:unlockedLevelVal||1, practiceLevel:practiceLevelVal||1, doneMask:doneMask,
+    wpm:wpmVal+5, noiseLevel:(noiseVal*5)/100, soundOn: soundVal===1,
+    gameScores:{hunter:hunterVal, rain:rainVal, qso:qsoVal}, bestStreak:streakVal
+  };
+}
+function generateSaveCode(){ return base62Encode(packState(), CODE_LENGTH); }
+function updateSaveCodeDisplay(){
+  var el = document.getElementById('save-code-box');
+  if(!el) return;
+  el.textContent = generateSaveCode();
+}
+function copyCode(){
+  var el = document.getElementById('save-code-box');
+  var btn = document.getElementById('copy-code-btn');
+  if(!el) return;
+  navigator.clipboard.writeText(el.textContent).then(function(){
+    var orig = btn.textContent;
+    btn.textContent = 'Скопировано';
+    setTimeout(function(){ btn.textContent = orig; }, 1500);
+  }).catch(function(){});
+}
+function applySaveCode(){
+  var input = document.getElementById('restore-code-input');
+  var fb = document.getElementById('restore-code-feedback');
+  var raw = (input.value||'').trim().replace(/\s+/g,'');
+  if(raw.length!==CODE_LENGTH){
+    fb.textContent = 'Код должен содержать ровно '+CODE_LENGTH+' символов.';
+    fb.className = 'feedback err';
+    return;
+  }
+  var num = base62Decode(raw);
+  if(num===null){
+    fb.textContent = 'Недопустимые символы в коде.';
+    fb.className = 'feedback err';
+    return;
+  }
+  var st = unpackState(num);
+  if(!st){
+    fb.textContent = 'Код повреждён или введён с ошибкой — проверь и попробуй снова.';
+    fb.className = 'feedback err';
+    return;
+  }
+  unlockedLevel = Math.max(1, Math.min(LEVELS.length, st.unlockedLevel));
+  practiceLevel = Math.max(1, Math.min(LEVELS.length, st.practiceLevel));
+  for(var i=1;i<=LEVELS.length;i++){
+    if(st.doneMask & (1<<(i-1))){ levelStats[i] = {attempts:15, correct:15}; }
+  }
+  wpm = st.wpm;
+  noiseLevel = st.noiseLevel;
+  soundOn = st.soundOn;
+  bestStreak = Math.max(bestStreak, st.bestStreak);
+  gameScores.hunter = Math.max(gameScores.hunter||0, st.gameScores.hunter);
+  gameScores.rain = Math.max(gameScores.rain||0, st.gameScores.rain);
+  gameScores.qso = Math.max(gameScores.qso||0, st.gameScores.qso);
+  saveProgress(); saveSettings(); saveGames();
+  document.getElementById('wpm-slider').value = wpm;
+  document.getElementById('wpm-out').textContent = wpm;
+  document.getElementById('sound-toggle-btn').textContent = soundOn ? '🔊 Звук' : '🔇 Звук выкл';
+  var noiseSlider = document.getElementById('ham-noise-slider');
+  if(noiseSlider){ noiseSlider.value = Math.round(noiseLevel*100); onNoiseChangeSilent(noiseSlider.value); }
+  updateStatsUI();
+  renderRoadmap('roadmap');
+  renderRoadmap('theory-roadmap');
+  renderGamesLeaderboard();
+  updateSaveCodeDisplay();
+  fb.textContent = 'Прогресс восстановлен!';
+  fb.className = 'feedback ok';
+  input.value = '';
+  showCelebrate('Прогресс восстановлен по коду 🎉');
+}
+
+/* ============ INIT ============ */
+renderTheoryTables();
+setMode('receive');
+loadAll();
+</script>
+</body>
+</html>
